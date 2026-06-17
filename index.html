@@ -764,6 +764,7 @@ const EVALS = ['优秀', '良好', '合格'];
 const EVAL_COLORS = { '优秀': 'bg-primary-100 text-primary-700', '良好': 'bg-blue-100 text-blue-700', '合格': 'bg-slate-100 text-slate-600' };
 
 // ============== Data Store ==============
+const STORE_KEY = 'desert_control_data';
 const Store = {
   blocks: [],
   projects: [],
@@ -773,13 +774,13 @@ const Store = {
   keepers: [],
   maintains: [],
 
-  init() {
-    // Blocks
+  _generateDefaults() {
+    const blocks = [];
     for (let i = 1; i <= 28; i++) {
       const level = rand(BLOCK_LEVELS);
       const status = rand(BLOCK_STATUS);
       const coverRate = randInt(20, 95);
-      this.blocks.push({
+      blocks.push({
         id: i,
         code: 'BLK-' + pad(i, 3),
         name: rand(AREAS) + '-' + rand(BLOCK_NAMES) + i,
@@ -788,10 +789,9 @@ const Store = {
         level, status, coverRate
       });
     }
-    // Projects
+    const projects = [];
     for (let i = 1; i <= 15; i++) {
-      const st = rand(PRO_STATUS);
-      this.projects.push({
+      projects.push({
         id: i,
         code: 'PRJ-2026-' + pad(i, 3),
         name: rand(AREAS) + rand(BLOCK_NAMES) + '综合治理' + ['工程', '项目', '一期', '二期'][i % 4],
@@ -801,13 +801,12 @@ const Store = {
         startDate: '202' + randInt(4, 6) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
         endDate: '202' + randInt(5, 7) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
         keeper: rand(KEEPERS),
-        status: st
+        status: rand(PRO_STATUS)
       });
     }
-    // Plantings
+    const plantings = [];
     for (let i = 1; i <= 15; i++) {
-      const survivalRate = randInt(70, 99);
-      this.plantings.push({
+      plantings.push({
         id: i,
         code: 'PLT-' + pad(i, 4),
         plant: rand(PLANTS),
@@ -816,16 +815,15 @@ const Store = {
         quantity: randInt(1000, 50000),
         area: randInt(50, 800),
         date: '2026-' + pad(randInt(3, 6), 2) + '-' + pad(randInt(1, 28), 2),
-        survivalRate,
+        survivalRate: randInt(70, 99),
         keeper: rand(KEEPERS)
       });
     }
-    // Measures
+    const measures = [];
     for (let i = 1; i <= 15; i++) {
       const t = rand(MEASURE_TYPES.filter(x => x !== '生物沙障'));
-      const intactRate = randInt(70, 99);
       const scale = t.includes('沙障') ? randInt(500, 3000) + '亩' : t.includes('滴灌') ? randInt(10, 100) + '套' : randInt(5, 50) + 'km';
-      this.measures.push({
+      measures.push({
         id: i,
         code: 'MSR-' + pad(i, 4),
         type: t,
@@ -833,13 +831,13 @@ const Store = {
         blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
         scale,
         date: '202' + randInt(5, 6) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
-        intactRate,
+        intactRate: randInt(70, 99),
         keeper: rand(KEEPERS)
       });
     }
-    // Replenishes
+    const replenishes = [];
     for (let i = 1; i <= 10; i++) {
-      this.replenishes.push({
+      replenishes.push({
         id: i,
         code: 'RPL-' + pad(i, 4),
         originBlock: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
@@ -848,34 +846,71 @@ const Store = {
         status: rand(REPLENISH_STATUS)
       });
     }
-    // Keepers (管护责任)
+    const keepers = [];
     for (let i = 1; i <= 10; i++) {
-      const phone = '1' + randInt(3, 9) + randInt(10000000, 99999999);
-      this.keepers.push({
+      keepers.push({
         id: i,
         name: KEEPERS[(i - 1) % KEEPERS.length],
         blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 30), 3),
         area: randInt(500, 5000),
-        phone,
+        phone: '1' + randInt(3, 9) + randInt(10000000, 99999999),
         eval: rand(EVALS)
       });
     }
-    // Maintains
+    const maintains = [];
     const notes = ['', '发现少量蚜虫，已喷洒生物农药', '沙障局部受损，需补充麦草', '生长状态良好', '需加强浇水频次'];
     for (let i = 1; i <= 15; i++) {
       const j = rand(JOBS);
-      const workload = j.includes('灌溉') ? randInt(50, 500) + '亩' : j.includes('防治') ? randInt(20, 200) + '亩' : j.includes('修枝') ? randInt(100, 1000) + '株' : randInt(1, 8) + '人·天';
-      this.maintains.push({
+      maintains.push({
         id: i,
         code: 'MNT-' + pad(i, 5),
         job: j,
         blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
         date: '2026-' + pad(randInt(4, 6), 2) + '-' + pad(randInt(1, 28), 2),
         keeper: rand(KEEPERS),
-        workload,
+        workload: j.includes('灌溉') ? randInt(50, 500) + '亩' : j.includes('防治') ? randInt(20, 200) + '亩' : j.includes('修枝') ? randInt(100, 1000) + '株' : randInt(1, 8) + '人·天',
         note: notes[i % 5] || '-'
       });
     }
+    return { blocks, projects, plantings, measures, replenishes, keepers, maintains };
+  },
+
+  init() {
+    const saved = localStorage.getItem(STORE_KEY);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        this.blocks = data.blocks || [];
+        this.projects = data.projects || [];
+        this.plantings = data.plantings || [];
+        this.measures = data.measures || [];
+        this.replenishes = data.replenishes || [];
+        this.keepers = data.keepers || [];
+        this.maintains = data.maintains || [];
+        return;
+      } catch (e) { /* fall through to defaults */ }
+    }
+    const defaults = this._generateDefaults();
+    this.blocks = defaults.blocks;
+    this.projects = defaults.projects;
+    this.plantings = defaults.plantings;
+    this.measures = defaults.measures;
+    this.replenishes = defaults.replenishes;
+    this.keepers = defaults.keepers;
+    this.maintains = defaults.maintains;
+    this.save();
+  },
+
+  save() {
+    localStorage.setItem(STORE_KEY, JSON.stringify({
+      blocks: this.blocks,
+      projects: this.projects,
+      plantings: this.plantings,
+      measures: this.measures,
+      replenishes: this.replenishes,
+      keepers: this.keepers,
+      maintains: this.maintains
+    }));
   },
 
   add(type, data) {
@@ -883,14 +918,25 @@ const Store = {
     const maxId = arr.length ? Math.max(...arr.map(x => x.id)) : 0;
     data.id = maxId + 1;
     arr.unshift(data);
+    this.save();
     return data;
   },
   update(type, id, data) {
     const idx = this[type].findIndex(x => x.id === id);
-    if (idx >= 0) this[type][idx] = { ...this[type][idx], ...data };
+    if (idx >= 0) { this[type][idx] = { ...this[type][idx], ...data }; this.save(); }
   },
   get(type, id) {
     return this[type].find(x => x.id === id);
+  },
+  findRelated(blockCode) {
+    const code = blockCode;
+    return {
+      projects: this.projects.filter(p => p.blockCode === code),
+      plantings: this.plantings.filter(p => p.blockCode === code),
+      measures: this.measures.filter(m => m.blockCode === code),
+      replenishes: this.replenishes.filter(r => r.originBlock === code),
+      maintains: this.maintains.filter(m => m.blockCode === code)
+    };
   }
 };
 Store.init();
@@ -927,19 +973,60 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
 
 // ============== Modal ==============
+function validateForm(form, rules) {
+  const errors = [];
+  for (const [name, rule] of Object.entries(rules)) {
+    const el = form.querySelector(`[name="${name}"]`);
+    if (!el) continue;
+    const val = el.value.trim();
+    if (rule.required && !val) {
+      errors.push(`${rule.label}不能为空`);
+      el.classList.add('border-red-400');
+    } else {
+      el.classList.remove('border-red-400');
+    }
+    if (val && rule.min !== undefined && parseFloat(val) < rule.min) {
+      errors.push(`${rule.label}不能小于${rule.min}`);
+      el.classList.add('border-red-400');
+    }
+    if (val && rule.max !== undefined && parseFloat(val) > rule.max) {
+      errors.push(`${rule.label}不能大于${rule.max}`);
+      el.classList.add('border-red-400');
+    }
+  }
+  return errors;
+}
+
 const Modal = {
-  open(title, fields, onSave) {
+  open(title, fields, onSave, opts = {}) {
     document.getElementById('modalTitle').textContent = title;
     document.getElementById('modalBody').innerHTML = fields;
     document.getElementById('modal').classList.remove('hidden');
     document.getElementById('modal').classList.add('flex');
+    const footer = document.getElementById('modalFooter');
+    footer.classList.remove('hidden');
     document.getElementById('modalSave').onclick = () => {
       const form = document.getElementById('modalForm');
       const data = {};
       form.querySelectorAll('[name]').forEach(el => data[el.name] = el.value);
+      if (opts.rules) {
+        const errors = validateForm(form, opts.rules);
+        if (errors.length) {
+          const errEl = document.getElementById('modalErrors');
+          if (errEl) { errEl.innerHTML = errors.map(e => `<div class="text-red-500 text-xs flex items-center"><i class="ri-error-warning-line mr-1"></i>${e}</div>`).join(''); }
+          return;
+        }
+      }
       onSave(data);
       Modal.close();
     };
+  },
+  openDetail(title, html) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('modal').classList.remove('hidden');
+    document.getElementById('modal').classList.add('flex');
+    document.getElementById('modalFooter').classList.add('hidden');
   },
   close() {
     document.getElementById('modal').classList.add('hidden');
@@ -949,6 +1036,113 @@ const Modal = {
 document.getElementById('modalClose').onclick = Modal.close;
 document.getElementById('modalCancel').onclick = Modal.close;
 document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') Modal.close(); });
+
+// ============== Detail Views ==============
+function buildTimeline(blockCode) {
+  const related = Store.findRelated(blockCode);
+  const events = [];
+  related.projects.forEach(p => events.push({ date: p.startDate, icon: 'ri-folder-chart-line', color: 'bg-blue-500', title: `工程: ${p.name}`, desc: `${p.type} · 投资${p.invest}万 · ${p.status}` }));
+  related.plantings.forEach(p => events.push({ date: p.date, icon: 'ri-seedling-line', color: 'bg-primary-500', title: `种植: ${p.plant}`, desc: `${p.quantity}株 · ${p.area}亩 · 成活率${p.survivalRate}%` }));
+  related.measures.forEach(m => events.push({ date: m.date, icon: 'ri-shield-check-line', color: 'bg-sand-500', title: `固沙: ${m.type}`, desc: `${m.spec} · ${m.scale} · 完好率${m.intactRate}%` }));
+  related.replenishes.forEach(r => events.push({ date: r.date, icon: 'ri-restart-line', color: 'bg-purple-500', title: `补植: ${r.originBlock}`, desc: `${r.quantity}株 · ${r.status}` }));
+  related.maintains.forEach(m => events.push({ date: m.date, icon: 'ri-tools-line', color: 'bg-slate-500', title: `养护: ${m.job}`, desc: `${m.blockCode} · ${m.workload}` }));
+  events.sort((a, b) => b.date.localeCompare(a.date));
+  if (!events.length) return '<div class="text-slate-400 text-sm py-4 text-center">暂无相关记录</div>';
+  return events.slice(0, 12).map((ev, i) => `
+    <div class="flex items-start">
+      <div class="flex flex-col items-center mr-3">
+        <div class="w-8 h-8 rounded-full ${ev.color} flex items-center justify-center text-white"><i class="${ev.icon} text-sm"></i></div>
+        ${i < events.slice(0,12).length - 1 ? '<div class="w-0.5 h-8 bg-slate-200"></div>' : ''}
+      </div>
+      <div class="pb-4">
+        <div class="text-sm font-medium text-slate-700">${ev.title}</div>
+        <div class="text-xs text-slate-500">${ev.desc}</div>
+        <div class="text-xs text-slate-400 mt-0.5">${ev.date}</div>
+      </div>
+    </div>`).join('');
+}
+
+function openBlockDetail(id) {
+  const b = Store.get('blocks', id);
+  if (!b) return;
+  const related = Store.findRelated(b.code);
+  const html = `
+    <div class="space-y-5">
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <div><span class="text-slate-500">区块编号：</span><span class="font-medium text-slate-800">${b.code}</span></div>
+        <div><span class="text-slate-500">区块名称：</span><span class="font-medium text-slate-800">${b.name}</span></div>
+        <div><span class="text-slate-500">所属区域：</span><span class="text-slate-700">${b.area}</span></div>
+        <div><span class="text-slate-500">面积：</span><span class="text-slate-700">${b.size.toLocaleString()} 亩</span></div>
+        <div><span class="text-slate-500">沙化程度：</span><span class="badge ${LEVEL_COLORS[b.level]}">${b.level}</span></div>
+        <div><span class="text-slate-500">治理状态：</span><span class="badge ${BLOCK_STATUS_COLORS[b.status]}">${b.status}</span></div>
+        <div class="col-span-2"><span class="text-slate-500">植被覆盖率：</span>
+          <div class="inline-flex items-center ml-1">
+            <div class="w-24 h-2 bg-slate-100 rounded-full overflow-hidden mr-2"><div class="h-full ${getRateBarColor(b.coverRate)} rounded-full" style="width:${b.coverRate}%"></div></div>
+            <span class="text-slate-700">${b.coverRate}%</span>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-slate-100 pt-4">
+        <h4 class="text-sm font-semibold text-slate-700 mb-3">关联数据摘要</h4>
+        <div class="grid grid-cols-5 gap-2 text-center">
+          <div class="bg-blue-50 rounded-lg p-2"><div class="text-lg font-bold text-blue-700">${related.projects.length}</div><div class="text-xs text-blue-600">工程</div></div>
+          <div class="bg-primary-50 rounded-lg p-2"><div class="text-lg font-bold text-primary-700">${related.plantings.length}</div><div class="text-xs text-primary-600">种植</div></div>
+          <div class="bg-sand-50 rounded-lg p-2"><div class="text-lg font-bold text-sand-700">${related.measures.length}</div><div class="text-xs text-sand-600">措施</div></div>
+          <div class="bg-purple-50 rounded-lg p-2"><div class="text-lg font-bold text-purple-700">${related.replenishes.length}</div><div class="text-xs text-purple-600">补植</div></div>
+          <div class="bg-slate-50 rounded-lg p-2"><div class="text-lg font-bold text-slate-700">${related.maintains.length}</div><div class="text-xs text-slate-600">养护</div></div>
+        </div>
+      </div>
+      ${related.plantings.length ? `<div class="border-t border-slate-100 pt-3">
+        <h4 class="text-sm font-semibold text-slate-700 mb-2">最近种植</h4>
+        <div class="space-y-1">${related.plantings.slice(0,3).map(p => `<div class="flex justify-between text-xs"><span class="text-slate-600">${p.plant} · ${p.quantity}株</span><span class="badge ${getRateColor(p.survivalRate)}">${p.survivalRate}%成活</span></div>`).join('')}</div>
+      </div>` : ''}
+      ${related.measures.length ? `<div class="border-t border-slate-100 pt-3">
+        <h4 class="text-sm font-semibold text-slate-700 mb-2">固沙措施</h4>
+        <div class="space-y-1">${related.measures.slice(0,3).map(m => `<div class="flex justify-between text-xs"><span class="text-slate-600">${m.type} · ${m.scale}</span><span class="badge ${getRateColor(m.intactRate)}">${m.intactRate}%完好</span></div>`).join('')}</div>
+      </div>` : ''}
+      <div class="border-t border-slate-100 pt-4">
+        <h4 class="text-sm font-semibold text-slate-700 mb-3"><i class="ri-time-line mr-1"></i>治理进度时间线</h4>
+        <div class="max-h-64 overflow-y-auto scrollbar-thin pr-2">${buildTimeline(b.code)}</div>
+      </div>
+      <div class="flex justify-end pt-2">
+        <button onclick="openBlockModal(${b.id})" class="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm hover:bg-primary-700"><i class="ri-edit-line mr-1"></i>编辑此区块</button>
+      </div>
+    </div>`;
+  Modal.openDetail(`区块详情 - ${b.name}`, html);
+}
+
+function openProjectDetail(id) {
+  const p = Store.get('projects', id);
+  if (!p) return;
+  const block = Store.blocks.find(b => b.code === p.blockCode);
+  const related = block ? Store.findRelated(block.code) : { plantings: [], measures: [], replenishes: [], maintains: [] };
+  const html = `
+    <div class="space-y-5">
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <div><span class="text-slate-500">工程编号：</span><span class="font-medium text-slate-800">${p.code}</span></div>
+        <div><span class="text-slate-500">工程名称：</span><span class="font-medium text-slate-800">${p.name}</span></div>
+        <div><span class="text-slate-500">工程类型：</span><span class="text-slate-700">${p.type}</span></div>
+        <div><span class="text-slate-500">所属区块：</span><span class="text-slate-700">${p.blockCode}${block ? ' (' + block.name + ')' : ''}</span></div>
+        <div><span class="text-slate-500">投资金额：</span><span class="text-slate-700">${p.invest} 万元</span></div>
+        <div><span class="text-slate-500">状态：</span><span class="badge ${PRO_STATUS_COLORS[p.status]}">${p.status}</span></div>
+        <div><span class="text-slate-500">起止时间：</span><span class="text-slate-700">${p.startDate} ~ ${p.endDate}</span></div>
+        <div><span class="text-slate-500">负责人：</span><span class="text-slate-700">${p.keeper}</span></div>
+      </div>
+      ${block ? `<div class="border-t border-slate-100 pt-4">
+        <h4 class="text-sm font-semibold text-slate-700 mb-3">所属区块关联摘要</h4>
+        <div class="grid grid-cols-4 gap-2 text-center">
+          <div class="bg-primary-50 rounded-lg p-2"><div class="text-lg font-bold text-primary-700">${related.plantings.length}</div><div class="text-xs text-primary-600">种植</div></div>
+          <div class="bg-sand-50 rounded-lg p-2"><div class="text-lg font-bold text-sand-700">${related.measures.length}</div><div class="text-xs text-sand-600">措施</div></div>
+          <div class="bg-purple-50 rounded-lg p-2"><div class="text-lg font-bold text-purple-700">${related.replenishes.length}</div><div class="text-xs text-purple-600">补植</div></div>
+          <div class="bg-slate-50 rounded-lg p-2"><div class="text-lg font-bold text-slate-700">${related.maintains.length}</div><div class="text-xs text-slate-600">养护</div></div>
+        </div>
+      </div>` : ''}
+      <div class="flex justify-end pt-2">
+        <button onclick="openProjectModal(${p.id})" class="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm hover:bg-primary-700"><i class="ri-edit-line mr-1"></i>编辑此工程</button>
+      </div>
+    </div>`;
+  Modal.openDetail(`工程详情 - ${p.name}`, html);
+}
 
 // ============== Render: Blocks ==============
 function renderBlocks() {
@@ -1010,6 +1204,9 @@ function renderBlocks() {
   });
 
   // Bind buttons
+  tbody.querySelectorAll('[data-action="view-block"]').forEach(btn => {
+    btn.onclick = () => openBlockDetail(parseInt(btn.dataset.id));
+  });
   tbody.querySelectorAll('[data-action="edit-block"]').forEach(btn => {
     btn.onclick = () => openBlockModal(parseInt(btn.dataset.id));
   });
@@ -1019,9 +1216,10 @@ function openBlockModal(id) {
   const b = id ? Store.get('blocks', id) : null;
   const title = id ? '编辑治理区块' : '新增治理区块';
   const fields = `<form id="modalForm">
+    <div id="modalErrors" class="mb-3"></div>
     <div class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-slate-700 mb-1.5">区块名称</label>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">区块名称 <span class="text-red-400">*</span></label>
         <input type="text" name="name" value="${b?.name||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="如：A区-南沙丘群1">
       </div>
       <div class="grid grid-cols-2 gap-3">
@@ -1067,7 +1265,7 @@ function openBlockModal(id) {
       toast('区块新增成功');
     }
     renderBlocks();
-  });
+  }, { rules: { name: { required: true, label: '区块名称' }, size: { min: 1, label: '面积' }, coverRate: { min: 0, max: 100, label: '植被覆盖率' } } });
 }
 
 // Block events
@@ -1097,12 +1295,15 @@ function renderProjects() {
       <td class="px-5 py-3.5 text-slate-600">${p.keeper}</td>
       <td class="px-5 py-3.5"><span class="badge ${PRO_STATUS_COLORS[p.status]}">${p.status}</span></td>
       <td class="px-5 py-3.5">
-        <button class="text-primary-600 hover:text-primary-700 text-xs mr-3">详情</button>
+        <button class="text-primary-600 hover:text-primary-700 text-xs mr-3" data-action="view-project" data-id="${p.id}">详情</button>
         <button class="text-slate-500 hover:text-slate-700 text-xs" data-action="edit-project" data-id="${p.id}">编辑</button>
       </td>
     </tr>`;
   });
   tbody.innerHTML = html;
+  tbody.querySelectorAll('[data-action="view-project"]').forEach(btn => {
+    btn.onclick = () => openProjectDetail(parseInt(btn.dataset.id));
+  });
   tbody.querySelectorAll('[data-action="edit-project"]').forEach(btn => {
     btn.onclick = () => openProjectModal(parseInt(btn.dataset.id));
   });
@@ -1112,8 +1313,9 @@ function openProjectModal(id) {
   const p = id ? Store.get('projects', id) : null;
   const title = id ? '编辑工程' : '新增工程';
   const fields = `<form id="modalForm">
+    <div id="modalErrors" class="mb-3"></div>
     <div class="space-y-4">
-      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">工程名称</label>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">工程名称 <span class="text-red-400">*</span></label>
         <input type="text" name="name" value="${p?.name||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
       </div>
       <div class="grid grid-cols-2 gap-3">
@@ -1162,7 +1364,7 @@ function openProjectModal(id) {
       toast('工程新增成功');
     }
     renderProjects();
-  });
+  }, { rules: { name: { required: true, label: '工程名称' }, invest: { min: 0, label: '投资金额' } } });
 }
 
 document.querySelector('#project button[data-new-project]').onclick = () => openProjectModal();
@@ -1200,6 +1402,7 @@ function openPlantingModal(id) {
   const p = id ? Store.get('plantings', id) : null;
   const title = id ? '编辑种植记录' : '新增种植记录';
   const fields = `<form id="modalForm">
+    <div id="modalErrors" class="mb-3"></div>
     <div class="space-y-4">
       <div class="grid grid-cols-2 gap-3">
         <div><label class="block text-sm font-medium text-slate-700 mb-1.5">植物名称</label>
@@ -1252,7 +1455,7 @@ function openPlantingModal(id) {
       toast('种植记录新增成功');
     }
     renderPlantings();
-  });
+  }, { rules: { quantity: { min: 1, label: '种植数量' }, area: { min: 1, label: '种植面积' }, survivalRate: { min: 0, max: 100, label: '成活率' } } });
 }
 
 document.querySelector('[data-new-planting]').onclick = () => openPlantingModal();
@@ -1288,6 +1491,7 @@ function openMeasureModal(id) {
   const m = id ? Store.get('measures', id) : null;
   const title = id ? '编辑固沙措施' : '新增固沙措施';
   const fields = `<form id="modalForm">
+    <div id="modalErrors" class="mb-3"></div>
     <div class="space-y-4">
       <div class="grid grid-cols-2 gap-3">
         <div><label class="block text-sm font-medium text-slate-700 mb-1.5">措施类型</label>
@@ -1335,7 +1539,7 @@ function openMeasureModal(id) {
       toast('措施新增成功');
     }
     renderMeasures();
-  });
+  }, { rules: { intactRate: { min: 0, max: 100, label: '完好率' }, scale: { required: true, label: '实施规模' } } });
 }
 
 document.querySelector('[data-new-measure]').onclick = () => openMeasureModal();
@@ -1388,6 +1592,7 @@ function openReplenishModal(id) {
   const r = id ? Store.get('replenishes', id) : null;
   const title = id ? '编辑补植记录' : '新增补植记录';
   const fields = `<form id="modalForm">
+    <div id="modalErrors" class="mb-3"></div>
     <div class="space-y-4">
       <div><label class="block text-sm font-medium text-slate-700 mb-1.5">原种植区</label>
         <input type="text" name="originBlock" value="${r?.originBlock||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
@@ -1418,7 +1623,7 @@ function openReplenishModal(id) {
       toast('补植记录新增成功');
     }
     renderReplenishes();
-  });
+  }, { rules: { originBlock: { required: true, label: '原种植区' }, quantity: { min: 1, label: '补植株数' } } });
 }
 
 document.querySelector('[data-new-replenish]').onclick = () => openReplenishModal();
@@ -1449,6 +1654,7 @@ function openKeeperModal(id) {
   const k = id ? Store.get('keepers', id) : null;
   const title = id ? '编辑管护责任' : '分配管护责任';
   const fields = `<form id="modalForm">
+    <div id="modalErrors" class="mb-3"></div>
     <div class="space-y-4">
       <div><label class="block text-sm font-medium text-slate-700 mb-1.5">管护人姓名</label>
         <input type="text" name="name" value="${k?.name||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
@@ -1483,7 +1689,7 @@ function openKeeperModal(id) {
       toast('管护责任分配成功');
     }
     renderKeepers();
-  });
+  }, { rules: { name: { required: true, label: '管护人姓名' }, area: { min: 1, label: '管护面积' } } });
 }
 
 document.querySelector('[data-new-keeper]').onclick = () => openKeeperModal();
