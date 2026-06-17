@@ -19,7 +19,7 @@ tailwind.config = {
       fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
     }
   }
-}
+};
 </script>
 <style>
 body { font-family: 'Inter', system-ui, sans-serif; }
@@ -91,7 +91,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
           <i class="ri-notification-3-line"></i>
           <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
-        <button class="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium flex items-center"><i class="ri-add-line mr-1.5"></i>新建</button>
+        <button data-new-block class="px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium flex items-center"><i class="ri-add-line mr-1.5"></i>新建</button>
       </div>
     </header>
 
@@ -163,10 +163,10 @@ body { font-family: 'Inter', system-ui, sans-serif; }
           <div class="flex items-center justify-between p-5 border-b border-slate-100">
             <h3 class="font-semibold text-slate-800">沙化土地区块列表</h3>
             <div class="flex items-center gap-2">
-              <select class="text-xs border border-slate-200 rounded-md px-3 py-1.5 text-slate-600">
-                <option>全部沙化程度</option><option>轻度</option><option>中度</option><option>重度</option><option>极重度</option>
+              <select data-level class="text-xs border border-slate-200 rounded-md px-3 py-1.5 text-slate-600">
+                <option value="">全部沙化程度</option><option value="轻度">轻度</option><option value="中度">中度</option><option value="重度">重度</option><option value="极重度">极重度</option>
               </select>
-              <button class="text-xs px-3 py-1.5 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50"><i class="ri-filter-line mr-1"></i>筛选</button>
+              <button data-block-filter class="text-xs px-3 py-1.5 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50"><i class="ri-filter-line mr-1"></i>筛选</button>
               <button class="text-xs px-3 py-1.5 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50"><i class="ri-download-line mr-1"></i>导出</button>
             </div>
           </div>
@@ -186,8 +186,8 @@ body { font-family: 'Inter', system-ui, sans-serif; }
             <tbody id="blockList" class="divide-y divide-slate-100"></tbody>
           </table>
           <div class="flex items-center justify-between px-5 py-3 border-t border-slate-100 text-xs text-slate-500">
-            <div>共 128 条记录</div>
-            <div class="flex gap-1">
+            <div>共 <span id="blockTotal">128</span> 条记录</div>
+            <div id="blockPagination" class="flex gap-1">
               <button class="w-7 h-7 rounded border border-slate-200 hover:bg-slate-50"><i class="ri-arrow-left-s-line"></i></button>
               <button class="w-7 h-7 rounded bg-primary-600 text-white">1</button>
               <button class="w-7 h-7 rounded border border-slate-200 hover:bg-slate-50">2</button>
@@ -230,7 +230,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
               <select class="text-xs border border-slate-200 rounded-md px-3 py-1.5 text-slate-600"><option>全部状态</option></select>
               <select class="text-xs border border-slate-200 rounded-md px-3 py-1.5 text-slate-600"><option>全部类型</option></select>
               <input type="date" class="text-xs border border-slate-200 rounded-md px-3 py-1.5 text-slate-600">
-              <button class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新建工程</button>
+              <button data-new-project class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新建工程</button>
             </div>
           </div>
           <table class="w-full text-sm">
@@ -287,7 +287,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
         <div class="bg-white rounded-xl border border-slate-100">
           <div class="flex items-center justify-between p-5 border-b border-slate-100">
             <h3 class="font-semibold text-slate-800">固沙植物种植记录</h3>
-            <button class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新增种植</button>
+            <button data-new-planting class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新增种植</button>
           </div>
           <table class="w-full text-sm">
             <thead class="bg-slate-50 text-slate-500 text-xs">
@@ -397,7 +397,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
             <div class="flex gap-2">
               <button class="text-xs px-3 py-1.5 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50">草方格</button>
               <button class="text-xs px-3 py-1.5 rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50">滴灌</button>
-              <button class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新增措施</button>
+              <button data-new-measure class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新增措施</button>
             </div>
           </div>
           <table class="w-full text-sm">
@@ -545,7 +545,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
           <div class="bg-white rounded-xl border border-slate-100">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
               <h3 class="font-semibold text-slate-800"><i class="ri-seedling-line text-primary-500 mr-2"></i>补植补造</h3>
-              <button class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新增补植</button>
+              <button data-new-replenish class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>新增补植</button>
             </div>
             <table class="w-full text-sm">
               <thead class="bg-slate-50 text-slate-500 text-xs">
@@ -564,7 +564,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
           <div class="bg-white rounded-xl border border-slate-100">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
               <h3 class="font-semibold text-slate-800"><i class="ri-user-shared-line text-blue-500 mr-2"></i>管护责任</h3>
-              <button class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>分配责任</button>
+              <button data-new-keeper class="text-xs px-3 py-1.5 rounded-md bg-primary-600 text-white hover:bg-primary-700"><i class="ri-add-line mr-1"></i>分配责任</button>
             </div>
             <table class="w-full text-sm">
               <thead class="bg-slate-50 text-slate-500 text-xs">
@@ -692,7 +692,217 @@ body { font-family: 'Inter', system-ui, sans-serif; }
   </div>
 </div>
 
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden items-center justify-center">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[85vh] flex flex-col">
+    <div class="flex items-center justify-between p-5 border-b border-slate-100">
+      <h3 id="modalTitle" class="text-lg font-semibold text-slate-800">弹窗标题</h3>
+      <button id="modalClose" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600">
+        <i class="ri-close-line text-lg"></i>
+      </button>
+    </div>
+    <div id="modalBody" class="p-5 overflow-y-auto scrollbar-thin"></div>
+    <div id="modalFooter" class="p-4 border-t border-slate-100 flex justify-end gap-2">
+      <button id="modalCancel" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 text-sm hover:bg-slate-50">取消</button>
+      <button id="modalSave" class="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm hover:bg-primary-700">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed top-5 right-5 z-50 hidden">
+  <div class="bg-slate-800 text-white text-sm px-4 py-2.5 rounded-lg shadow-lg flex items-center">
+    <i id="toastIcon" class="ri-check-line mr-2 text-green-400"></i>
+    <span id="toastText">操作成功</span>
+  </div>
+</div>
+
 <script>
+// ============== Utils ==============
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function randFloat(min, max, d = 1) { return (Math.random() * (max - min) + min).toFixed(d); }
+function pad(n, l) { return String(n).padStart(l, '0'); }
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  document.getElementById('toastText').textContent = msg;
+  document.getElementById('toastIcon').className = type === 'success' ? 'ri-check-line mr-2 text-green-400' : 'ri-error-warning-line mr-2 text-red-400';
+  el.classList.remove('hidden');
+  setTimeout(() => el.classList.add('hidden'), 2200);
+}
+function getRateColor(rate) {
+  if (rate >= 85) return 'bg-primary-100 text-primary-700';
+  if (rate >= 70) return 'bg-sand-100 text-sand-700';
+  return 'bg-desert-100 text-desert-700';
+}
+function getRateBarColor(rate) {
+  if (rate >= 85) return 'bg-primary-500';
+  if (rate >= 70) return 'bg-sand-500';
+  return 'bg-desert-500';
+}
+
+// ============== Constants ==============
+const AREAS = ['A区', 'B区', 'C区', 'D区', 'E区'];
+const BLOCK_NAMES = ['东段沙带', '西部戈壁', '南沙丘群', '北防风带', '中心示范区', '东滩沙化区'];
+const DESERTS = ['毛乌素沙地', '腾格里沙漠', '库布齐沙漠', '科尔沁沙地'];
+const BLOCK_LEVELS = ['轻度', '中度', '重度', '极重度'];
+const LEVEL_COLORS = { '轻度': 'bg-green-100 text-green-700', '中度': 'bg-sand-100 text-sand-700', '重度': 'bg-desert-100 text-desert-700', '极重度': 'bg-red-100 text-red-700' };
+const BLOCK_STATUS = ['未启动', '治理中', '已完工', '验收通过'];
+const BLOCK_STATUS_COLORS = { '未启动': 'bg-slate-100 text-slate-600', '治理中': 'bg-desert-100 text-desert-700', '已完工': 'bg-blue-100 text-blue-700', '验收通过': 'bg-primary-100 text-primary-700' };
+const PRO_STATUS = ['待启动', '在建', '已完工', '验收中'];
+const PRO_STATUS_COLORS = { '待启动': 'bg-slate-100 text-slate-600', '在建': 'bg-desert-100 text-desert-700', '已完工': 'bg-primary-100 text-primary-700', '验收中': 'bg-blue-100 text-blue-700' };
+const PROJECT_TYPES = ['植树造林', '封沙育林', '工程固沙', '生态移民', '综合治理'];
+const PLANTS = ['梭梭', '沙拐枣', '花棒', '柠条', '沙棘', '胡杨', '红柳', '白刺'];
+const PLANT_TYPES = ['乔木', '灌木', '草本', '藤本'];
+const MEASURE_TYPES = ['草方格沙障', '滴灌设施', '防风林带', '砾石压沙', '生物沙障'];
+const MEASURE_SPECS = ['1m×1m麦草', '1.5m×1.5m稻草', '2m×2m塑料网', '地下水滴灌', '集雨节水滴灌', '智能水肥一体化', '乔木林带', '灌木林带'];
+const KEEPERS = ['张建国', '李秀芳', '王志强', '赵春花', '刘德海', '陈守义', '周桂兰', '吴为民'];
+const JOBS = ['浇水灌溉', '病虫害防治', '修枝整形', '沙障维护', '施肥松土', '防火巡查'];
+const REPLENISH_STATUS = ['待补植', '补植中', '已完成'];
+const REPLENISH_STATUS_COLORS = { '待补植': 'bg-slate-100 text-slate-600', '补植中': 'bg-desert-100 text-desert-700', '已完成': 'bg-primary-100 text-primary-700' };
+const EVALS = ['优秀', '良好', '合格'];
+const EVAL_COLORS = { '优秀': 'bg-primary-100 text-primary-700', '良好': 'bg-blue-100 text-blue-700', '合格': 'bg-slate-100 text-slate-600' };
+
+// ============== Data Store ==============
+const Store = {
+  blocks: [],
+  projects: [],
+  plantings: [],
+  measures: [],
+  replenishes: [],
+  keepers: [],
+  maintains: [],
+
+  init() {
+    // Blocks
+    for (let i = 1; i <= 28; i++) {
+      const level = rand(BLOCK_LEVELS);
+      const status = rand(BLOCK_STATUS);
+      const coverRate = randInt(20, 95);
+      this.blocks.push({
+        id: i,
+        code: 'BLK-' + pad(i, 3),
+        name: rand(AREAS) + '-' + rand(BLOCK_NAMES) + i,
+        area: rand(DESERTS),
+        size: randInt(500, 5000),
+        level, status, coverRate
+      });
+    }
+    // Projects
+    for (let i = 1; i <= 15; i++) {
+      const st = rand(PRO_STATUS);
+      this.projects.push({
+        id: i,
+        code: 'PRJ-2026-' + pad(i, 3),
+        name: rand(AREAS) + rand(BLOCK_NAMES) + '综合治理' + ['工程', '项目', '一期', '二期'][i % 4],
+        type: rand(PROJECT_TYPES),
+        blockCode: 'BLK-' + pad(randInt(1, 28), 3),
+        invest: randInt(120, 3500),
+        startDate: '202' + randInt(4, 6) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
+        endDate: '202' + randInt(5, 7) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
+        keeper: rand(KEEPERS),
+        status: st
+      });
+    }
+    // Plantings
+    for (let i = 1; i <= 15; i++) {
+      const survivalRate = randInt(70, 99);
+      this.plantings.push({
+        id: i,
+        code: 'PLT-' + pad(i, 4),
+        plant: rand(PLANTS),
+        plantType: rand(PLANT_TYPES),
+        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        quantity: randInt(1000, 50000),
+        area: randInt(50, 800),
+        date: '2026-' + pad(randInt(3, 6), 2) + '-' + pad(randInt(1, 28), 2),
+        survivalRate,
+        keeper: rand(KEEPERS)
+      });
+    }
+    // Measures
+    for (let i = 1; i <= 15; i++) {
+      const t = rand(MEASURE_TYPES.filter(x => x !== '生物沙障'));
+      const intactRate = randInt(70, 99);
+      const scale = t.includes('沙障') ? randInt(500, 3000) + '亩' : t.includes('滴灌') ? randInt(10, 100) + '套' : randInt(5, 50) + 'km';
+      this.measures.push({
+        id: i,
+        code: 'MSR-' + pad(i, 4),
+        type: t,
+        spec: rand(MEASURE_SPECS),
+        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        scale,
+        date: '202' + randInt(5, 6) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
+        intactRate,
+        keeper: rand(KEEPERS)
+      });
+    }
+    // Replenishes
+    for (let i = 1; i <= 10; i++) {
+      this.replenishes.push({
+        id: i,
+        code: 'RPL-' + pad(i, 4),
+        originBlock: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        quantity: randInt(500, 8000),
+        date: '2026-' + pad(randInt(4, 6), 2) + '-' + pad(randInt(1, 28), 2),
+        status: rand(REPLENISH_STATUS)
+      });
+    }
+    // Keepers (管护责任)
+    for (let i = 1; i <= 10; i++) {
+      const phone = '1' + randInt(3, 9) + randInt(10000000, 99999999);
+      this.keepers.push({
+        id: i,
+        name: KEEPERS[(i - 1) % KEEPERS.length],
+        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 30), 3),
+        area: randInt(500, 5000),
+        phone,
+        eval: rand(EVALS)
+      });
+    }
+    // Maintains
+    const notes = ['', '发现少量蚜虫，已喷洒生物农药', '沙障局部受损，需补充麦草', '生长状态良好', '需加强浇水频次'];
+    for (let i = 1; i <= 15; i++) {
+      const j = rand(JOBS);
+      const workload = j.includes('灌溉') ? randInt(50, 500) + '亩' : j.includes('防治') ? randInt(20, 200) + '亩' : j.includes('修枝') ? randInt(100, 1000) + '株' : randInt(1, 8) + '人·天';
+      this.maintains.push({
+        id: i,
+        code: 'MNT-' + pad(i, 5),
+        job: j,
+        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        date: '2026-' + pad(randInt(4, 6), 2) + '-' + pad(randInt(1, 28), 2),
+        keeper: rand(KEEPERS),
+        workload,
+        note: notes[i % 5] || '-'
+      });
+    }
+  },
+
+  add(type, data) {
+    const arr = this[type];
+    const maxId = arr.length ? Math.max(...arr.map(x => x.id)) : 0;
+    data.id = maxId + 1;
+    arr.unshift(data);
+    return data;
+  },
+  update(type, id, data) {
+    const idx = this[type].findIndex(x => x.id === id);
+    if (idx >= 0) this[type][idx] = { ...this[type][idx], ...data };
+  },
+  get(type, id) {
+    return this[type].find(x => x.id === id);
+  }
+};
+Store.init();
+
+// ============== Page State ==============
+const State = {
+  block: { page: 1, pageSize: 10, keyword: '', level: '' },
+  project: { page: 1, pageSize: 10 },
+  planting: { page: 1, pageSize: 10 },
+  measure: { page: 1, pageSize: 10 }
+};
+
 // ============== Navigation ==============
 const pageTitles = {
   dashboard: ['治理区块', '沙化土地区块管理与概览'],
@@ -712,142 +922,435 @@ document.querySelectorAll('.nav-item').forEach(item => {
     document.getElementById(page).classList.add('active');
     document.getElementById('pageTitle').textContent = pageTitles[page][0];
     document.querySelector('#pageTitle + div').textContent = pageTitles[page][1];
-    setTimeout(initChartsForPage(page), 50);
+    setTimeout(() => initChartsForPage(page), 50);
   });
 });
 
-// ============== Mock Data ==============
-const areas = ['A区', 'B区', 'C区', 'D区', 'E区'];
-const blocks = ['东段沙带', '西部戈壁', '南沙丘群', '北防风带', '中心示范区', '东滩沙化区'];
-const blockLevels = ['轻度', '中度', '重度', '极重度'];
-const levelColors = { '轻度': 'bg-green-100 text-green-700', '中度': 'bg-sand-100 text-sand-700', '重度': 'bg-desert-100 text-desert-700', '极重度': 'bg-red-100 text-red-700' };
-const statusList = ['未启动', '治理中', '已完工', '验收通过'];
-const statusColors = { '未启动': 'bg-slate-100 text-slate-600', '治理中': 'bg-desert-100 text-desert-700', '已完工': 'bg-blue-100 text-blue-700', '验收通过': 'bg-primary-100 text-primary-700' };
-const proStatus = ['待启动', '在建', '已完工', '验收中'];
-const proColors = { '待启动': 'bg-slate-100 text-slate-600', '在建': 'bg-desert-100 text-desert-700', '已完工': 'bg-primary-100 text-primary-700', '验收中': 'bg-blue-100 text-blue-700' };
-const projectTypes = ['植树造林', '封沙育林', '工程固沙', '生态移民', '综合治理'];
-const plants = ['梭梭', '沙拐枣', '花棒', '柠条', '沙棘', '胡杨', '红柳', '白刺'];
-const plantTypes = ['乔木', '灌木', '草本', '藤本'];
-const measures = ['草方格沙障', '滴灌设施', '防风林带', '砾石压沙', '生物沙障'];
-const keepers = ['张建国', '李秀芳', '王志强', '赵春花', '刘德海', '陈守义', '周桂兰', '吴为民'];
-const jobs = ['浇水灌溉', '病虫害防治', '修枝整形', '沙障维护', '施肥松土', '防火巡查'];
+// ============== Modal ==============
+const Modal = {
+  open(title, fields, onSave) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalBody').innerHTML = fields;
+    document.getElementById('modal').classList.remove('hidden');
+    document.getElementById('modal').classList.add('flex');
+    document.getElementById('modalSave').onclick = () => {
+      const form = document.getElementById('modalForm');
+      const data = {};
+      form.querySelectorAll('[name]').forEach(el => data[el.name] = el.value);
+      onSave(data);
+      Modal.close();
+    };
+  },
+  close() {
+    document.getElementById('modal').classList.add('hidden');
+    document.getElementById('modal').classList.remove('flex');
+  }
+};
+document.getElementById('modalClose').onclick = Modal.close;
+document.getElementById('modalCancel').onclick = Modal.close;
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') Modal.close(); });
 
-function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-function randFloat(min, max, d = 1) { return (Math.random() * (max - min) + min).toFixed(d); }
+// ============== Render: Blocks ==============
+function renderBlocks() {
+  const { page, pageSize, keyword, level } = State.block;
+  let data = Store.blocks.filter(b => {
+    const matchKw = !keyword || b.name.includes(keyword) || b.code.includes(keyword) || b.area.includes(keyword);
+    const matchLv = !level || b.level === level;
+    return matchKw && matchLv;
+  });
+  const total = data.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const start = (page - 1) * pageSize;
+  const pageData = data.slice(start, start + pageSize);
 
-// ============== Block List ==============
-(function renderBlocks() {
   const tbody = document.getElementById('blockList');
   let html = '';
-  for (let i = 1; i <= 10; i++) {
-    const level = rand(blockLevels);
-    const status = rand(statusList);
-    html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 text-slate-700 font-mono text-xs">BLK-${String(i).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-800 font-medium">${rand(areas)}-${rand(blocks)}${i}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(['毛乌素沙地','腾格里沙漠','库布齐沙漠','科尔沁沙地'])}</td>
-      <td class="px-5 py-3.5 text-slate-700">${randInt(500, 5000).toLocaleString()}</td>
-      <td class="px-5 py-3.5"><span class="badge ${levelColors[level]}">${level}</span></td>
-      <td class="px-5 py-3.5"><span class="badge ${statusColors[status]}">${status}</span></td>
+  pageData.forEach(b => {
+    html += `<tr class="hover:bg-slate-50" data-id="${b.id}">
+      <td class="px-5 py-3.5 text-slate-700 font-mono text-xs">${b.code}</td>
+      <td class="px-5 py-3.5 text-slate-800 font-medium">${b.name}</td>
+      <td class="px-5 py-3.5 text-slate-600">${b.area}</td>
+      <td class="px-5 py-3.5 text-slate-700">${b.size.toLocaleString()}</td>
+      <td class="px-5 py-3.5"><span class="badge ${LEVEL_COLORS[b.level]}">${b.level}</span></td>
+      <td class="px-5 py-3.5"><span class="badge ${BLOCK_STATUS_COLORS[b.status]}">${b.status}</span></td>
       <td class="px-5 py-3.5">
         <div class="flex items-center">
           <div class="w-20 h-1.5 bg-slate-100 rounded-full overflow-hidden mr-2">
-            <div class="h-full bg-primary-500 rounded-full" style="width:${randInt(20,95)}%"></div>
+            <div class="h-full ${getRateBarColor(b.coverRate)} rounded-full" style="width:${b.coverRate}%"></div>
           </div>
-          <span class="text-xs text-slate-600">${randInt(20,95)}%</span>
+          <span class="text-xs text-slate-600">${b.coverRate}%</span>
         </div>
       </td>
       <td class="px-5 py-3.5">
-        <button class="text-primary-600 hover:text-primary-700 text-xs mr-3">查看</button>
-        <button class="text-slate-500 hover:text-slate-700 text-xs">编辑</button>
+        <button class="text-primary-600 hover:text-primary-700 text-xs mr-3" data-action="view-block" data-id="${b.id}">查看</button>
+        <button class="text-slate-500 hover:text-slate-700 text-xs" data-action="edit-block" data-id="${b.id}">编辑</button>
       </td>
     </tr>`;
-  }
+  });
+  if (!pageData.length) html = `<tr><td colspan="8" class="px-5 py-8 text-center text-slate-400 text-sm">暂无匹配数据</td></tr>`;
   tbody.innerHTML = html;
-})();
 
-// ============== Project List ==============
-(function renderProjects() {
+  // Pagination
+  document.getElementById('blockTotal').textContent = total;
+  const pg = document.getElementById('blockPagination');
+  let pgHtml = `<button class="w-7 h-7 rounded border border-slate-200 hover:bg-slate-50 disabled:opacity-50" ${page===1?'disabled':''} data-page="prev"><i class="ri-arrow-left-s-line"></i></button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    pgHtml += `<button class="w-7 h-7 rounded ${i===page?'bg-primary-600 text-white':'border border-slate-200 hover:bg-slate-50'}" data-page="${i}">${i}</button>`;
+  }
+  pgHtml += `<button class="w-7 h-7 rounded border border-slate-200 hover:bg-slate-50 disabled:opacity-50" ${page===totalPages?'disabled':''} data-page="next"><i class="ri-arrow-right-s-line"></i></button>`;
+  pg.innerHTML = pgHtml;
+  pg.querySelectorAll('button').forEach(btn => {
+    btn.onclick = () => {
+      const p = btn.dataset.page;
+      if (p === 'prev') State.block.page = Math.max(1, page - 1);
+      else if (p === 'next') State.block.page = Math.min(totalPages, page + 1);
+      else State.block.page = parseInt(p);
+      renderBlocks();
+    };
+  });
+
+  // Bind buttons
+  tbody.querySelectorAll('[data-action="edit-block"]').forEach(btn => {
+    btn.onclick = () => openBlockModal(parseInt(btn.dataset.id));
+  });
+}
+
+function openBlockModal(id) {
+  const b = id ? Store.get('blocks', id) : null;
+  const title = id ? '编辑治理区块' : '新增治理区块';
+  const fields = `<form id="modalForm">
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">区块名称</label>
+        <input type="text" name="name" value="${b?.name||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="如：A区-南沙丘群1">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">所属区域</label>
+          <select name="area" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+            ${DESERTS.map(d => `<option ${b?.area===d?'selected':''}>${d}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">面积(亩)</label>
+          <input type="number" name="size" value="${b?.size||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">沙化程度</label>
+          <select name="level" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+            ${BLOCK_LEVELS.map(l => `<option ${b?.level===l?'selected':''}>${l}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1.5">治理状态</label>
+          <select name="status" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+            ${BLOCK_STATUS.map(s => `<option ${b?.status===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1.5">植被覆盖率(%)</label>
+        <input type="number" name="coverRate" min="0" max="100" value="${b?.coverRate||0}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+      </div>
+    </div>
+  </form>`;
+  Modal.open(title, fields, data => {
+    const d = { ...data, size: parseInt(data.size)||0, coverRate: parseInt(data.coverRate)||0 };
+    if (id) {
+      Store.update('blocks', id, d);
+      toast('区块更新成功');
+    } else {
+      d.code = 'BLK-' + pad(Store.blocks.length + 1, 3);
+      Store.add('blocks', d);
+      toast('区块新增成功');
+    }
+    renderBlocks();
+  });
+}
+
+// Block events
+document.querySelector('#dashboard button[data-block-filter]').onclick = () => renderBlocks();
+document.querySelector('#dashboard select[data-level]').onchange = e => { State.block.level = e.target.value; State.block.page = 1; renderBlocks(); };
+document.querySelector('header input[type="text"]').addEventListener('input', e => {
+  if (document.querySelector('.nav-item.active').dataset.page === 'dashboard') {
+    State.block.keyword = e.target.value.trim();
+    State.block.page = 1;
+    renderBlocks();
+  }
+});
+document.querySelector('header button[data-new-block]').onclick = () => openBlockModal();
+
+// ============== Render: Projects ==============
+function renderProjects() {
   const tbody = document.getElementById('projectList');
   let html = '';
-  for (let i = 1; i <= 10; i++) {
-    const st = rand(proStatus);
+  Store.projects.slice(0, 10).forEach(p => {
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">PRJ-2026-${String(i).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-800 font-medium">${rand(areas)}${rand(blocks)}综合治理${['工程','项目','一期','二期'][i%4]}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(projectTypes)}</td>
-      <td class="px-5 py-3.5 text-slate-600">BLK-${String(randInt(1,128)).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-700 font-medium">${randInt(120, 3500)}</td>
-      <td class="px-5 py-3.5 text-slate-600 text-xs">202${randInt(4,6)}-${String(randInt(1,12)).padStart(2,'0')} ~ 202${randInt(5,7)}-${String(randInt(1,12)).padStart(2,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(keepers)}</td>
-      <td class="px-5 py-3.5"><span class="badge ${proColors[st]}">${st}</span></td>
+      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">${p.code}</td>
+      <td class="px-5 py-3.5 text-slate-800 font-medium">${p.name}</td>
+      <td class="px-5 py-3.5 text-slate-600">${p.type}</td>
+      <td class="px-5 py-3.5 text-slate-600">${p.blockCode}</td>
+      <td class="px-5 py-3.5 text-slate-700 font-medium">${p.invest}</td>
+      <td class="px-5 py-3.5 text-slate-600 text-xs">${p.startDate} ~ ${p.endDate}</td>
+      <td class="px-5 py-3.5 text-slate-600">${p.keeper}</td>
+      <td class="px-5 py-3.5"><span class="badge ${PRO_STATUS_COLORS[p.status]}">${p.status}</span></td>
       <td class="px-5 py-3.5">
         <button class="text-primary-600 hover:text-primary-700 text-xs mr-3">详情</button>
-        <button class="text-slate-500 hover:text-slate-700 text-xs">编辑</button>
+        <button class="text-slate-500 hover:text-slate-700 text-xs" data-action="edit-project" data-id="${p.id}">编辑</button>
       </td>
     </tr>`;
-  }
+  });
   tbody.innerHTML = html;
-})();
+  tbody.querySelectorAll('[data-action="edit-project"]').forEach(btn => {
+    btn.onclick = () => openProjectModal(parseInt(btn.dataset.id));
+  });
+}
 
-// ============== Planting List ==============
-(function renderPlanting() {
+function openProjectModal(id) {
+  const p = id ? Store.get('projects', id) : null;
+  const title = id ? '编辑工程' : '新增工程';
+  const fields = `<form id="modalForm">
+    <div class="space-y-4">
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">工程名称</label>
+        <input type="text" name="name" value="${p?.name||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">工程类型</label>
+          <select name="type" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${PROJECT_TYPES.map(t => `<option ${p?.type===t?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">所属区块</label>
+          <input type="text" name="blockCode" value="${p?.blockCode||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">投资(万元)</label>
+          <input type="number" name="invest" value="${p?.invest||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">负责人</label>
+          <select name="keeper" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${KEEPERS.map(k => `<option ${p?.keeper===k?'selected':''}>${k}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">开始日期</label>
+          <input type="date" name="startDate" value="${p?.startDate||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">结束日期</label>
+          <input type="date" name="endDate" value="${p?.endDate||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">状态</label>
+        <select name="status" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+          ${PRO_STATUS.map(s => `<option ${p?.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  </form>`;
+  Modal.open(title, fields, data => {
+    const d = { ...data, invest: parseInt(data.invest)||0 };
+    if (id) {
+      Store.update('projects', id, d);
+      toast('工程更新成功');
+    } else {
+      d.code = 'PRJ-2026-' + pad(Store.projects.length + 1, 3);
+      Store.add('projects', d);
+      toast('工程新增成功');
+    }
+    renderProjects();
+  });
+}
+
+document.querySelector('#project button[data-new-project]').onclick = () => openProjectModal();
+
+
+// ============== Render: Plantings ==============
+function renderPlantings() {
   const tbody = document.getElementById('plantingList');
   let html = '';
-  for (let i = 1; i <= 10; i++) {
+  Store.plantings.slice(0, 10).forEach(p => {
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">PLT-${String(i).padStart(4,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-800 font-medium">${rand(plants)}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(plantTypes)}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(areas)}-BLK-${String(randInt(1,50)).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-700">${randInt(1000, 50000).toLocaleString()}</td>
-      <td class="px-5 py-3.5 text-slate-700">${randInt(50, 800)}</td>
-      <td class="px-5 py-3.5 text-slate-600 text-xs">2026-${String(randInt(3,6)).padStart(2,'0')}-${String(randInt(1,28)).padStart(2,'0')}</td>
+      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">${p.code}</td>
+      <td class="px-5 py-3.5 text-slate-800 font-medium">${p.plant}</td>
+      <td class="px-5 py-3.5 text-slate-600">${p.plantType}</td>
+      <td class="px-5 py-3.5 text-slate-600">${p.blockCode}</td>
+      <td class="px-5 py-3.5 text-slate-700">${p.quantity.toLocaleString()}</td>
+      <td class="px-5 py-3.5 text-slate-700">${p.area}</td>
+      <td class="px-5 py-3.5 text-slate-600 text-xs">${p.date}</td>
       <td class="px-5 py-3.5">
-        <span class="badge ${randInt(75,100) >= 85 ? 'bg-primary-100 text-primary-700' : 'bg-sand-100 text-sand-700'}">${randInt(75,99)}%</span>
+        <span class="badge ${getRateColor(p.survivalRate)}">${p.survivalRate}%</span>
       </td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(keepers)}</td>
+      <td class="px-5 py-3.5">
+        <span class="text-slate-600">${p.keeper}</span>
+        <button class="text-slate-400 hover:text-slate-600 text-xs ml-2" data-action="edit-planting" data-id="${p.id}">编辑</button>
+      </td>
     </tr>`;
-  }
+  });
   tbody.innerHTML = html;
-})();
+  tbody.querySelectorAll('[data-action="edit-planting"]').forEach(btn => {
+    btn.onclick = () => openPlantingModal(parseInt(btn.dataset.id));
+  });
+}
 
-// ============== Measures List ==============
-(function renderMeasures() {
+function openPlantingModal(id) {
+  const p = id ? Store.get('plantings', id) : null;
+  const title = id ? '编辑种植记录' : '新增种植记录';
+  const fields = `<form id="modalForm">
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">植物名称</label>
+          <select name="plant" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${PLANTS.map(x => `<option ${p?.plant===x?'selected':''}>${x}</option>`).join('')}
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">植物类型</label>
+          <select name="plantType" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${PLANT_TYPES.map(x => `<option ${p?.plantType===x?'selected':''}>${x}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">所属区块</label>
+          <input type="text" name="blockCode" value="${p?.blockCode||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">种植日期</label>
+          <input type="date" name="date" value="${p?.date||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">种植数量</label>
+          <input type="number" name="quantity" value="${p?.quantity||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">种植面积(亩)</label>
+          <input type="number" name="area" value="${p?.area||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">成活率(%)</label>
+          <input type="number" name="survivalRate" min="0" max="100" value="${p?.survivalRate||85}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">负责人</label>
+          <select name="keeper" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${KEEPERS.map(k => `<option ${p?.keeper===k?'selected':''}>${k}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>`;
+  Modal.open(title, fields, data => {
+    const d = { ...data, quantity: parseInt(data.quantity)||0, area: parseInt(data.area)||0, survivalRate: parseInt(data.survivalRate)||0 };
+    if (id) {
+      Store.update('plantings', id, d);
+      toast('种植记录更新成功');
+    } else {
+      d.code = 'PLT-' + pad(Store.plantings.length + 1, 4);
+      Store.add('plantings', d);
+      toast('种植记录新增成功');
+    }
+    renderPlantings();
+  });
+}
+
+document.querySelector('[data-new-planting]').onclick = () => openPlantingModal();
+
+// ============== Render: Measures ==============
+function renderMeasures() {
   const tbody = document.getElementById('measuresList');
   let html = '';
-  const mTypes = ['草方格沙障', '滴灌设施', '防风林带', '砾石压沙'];
-  const specs = ['1m×1m麦草', '1.5m×1.5m稻草', '地下水滴灌', '集雨节水滴灌', '乔木林带', '灌木林带'];
-  for (let i = 1; i <= 10; i++) {
-    const t = rand(mTypes);
+  Store.measures.slice(0, 10).forEach(m => {
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">MSR-${String(i).padStart(4,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-800 font-medium">${t}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(specs)}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(areas)}-BLK-${String(randInt(1,50)).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-700">${t.includes('沙障')?randInt(500,3000)+'亩':t.includes('滴灌')?randInt(10,100)+'套':randInt(5,50)+'km'}</td>
-      <td class="px-5 py-3.5 text-slate-600 text-xs">202${randInt(5,6)}-${String(randInt(1,12)).padStart(2,'0')}-${String(randInt(1,28)).padStart(2,'0')}</td>
+      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">${m.code}</td>
+      <td class="px-5 py-3.5 text-slate-800 font-medium">${m.type}</td>
+      <td class="px-5 py-3.5 text-slate-600">${m.spec}</td>
+      <td class="px-5 py-3.5 text-slate-600">${m.blockCode}</td>
+      <td class="px-5 py-3.5 text-slate-700">${m.scale}</td>
+      <td class="px-5 py-3.5 text-slate-600 text-xs">${m.date}</td>
       <td class="px-5 py-3.5">
-        <span class="badge ${randInt(70,100) >= 85 ? 'bg-primary-100 text-primary-700' : 'bg-sand-100 text-sand-700'}">${randInt(70,99)}%</span>
+        <span class="badge ${getRateColor(m.intactRate)}">${m.intactRate}%</span>
       </td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(keepers)}</td>
+      <td class="px-5 py-3.5">
+        <span class="text-slate-600">${m.keeper}</span>
+        <button class="text-slate-400 hover:text-slate-600 text-xs ml-2" data-action="edit-measure" data-id="${m.id}">编辑</button>
+      </td>
     </tr>`;
-  }
+  });
   tbody.innerHTML = html;
-})();
+  tbody.querySelectorAll('[data-action="edit-measure"]').forEach(btn => {
+    btn.onclick = () => openMeasureModal(parseInt(btn.dataset.id));
+  });
+}
 
-// ============== Monitor List ==============
-(function renderMonitor() {
+function openMeasureModal(id) {
+  const m = id ? Store.get('measures', id) : null;
+  const title = id ? '编辑固沙措施' : '新增固沙措施';
+  const fields = `<form id="modalForm">
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">措施类型</label>
+          <select name="type" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${MEASURE_TYPES.map(x => `<option ${m?.type===x?'selected':''}>${x}</option>`).join('')}
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">规格</label>
+          <select name="spec" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${MEASURE_SPECS.map(x => `<option ${m?.spec===x?'selected':''}>${x}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">所属区块</label>
+          <input type="text" name="blockCode" value="${m?.blockCode||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">实施日期</label>
+          <input type="date" name="date" value="${m?.date||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">实施规模</label>
+          <input type="text" name="scale" value="${m?.scale||''}" placeholder="如：500亩 或 20套" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">完好率(%)</label>
+          <input type="number" name="intactRate" min="0" max="100" value="${m?.intactRate||85}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">负责人</label>
+        <select name="keeper" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+          ${KEEPERS.map(k => `<option ${m?.keeper===k?'selected':''}>${k}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  </form>`;
+  Modal.open(title, fields, data => {
+    const d = { ...data, intactRate: parseInt(data.intactRate)||0 };
+    if (id) {
+      Store.update('measures', id, d);
+      toast('措施更新成功');
+    } else {
+      d.code = 'MSR-' + pad(Store.measures.length + 1, 4);
+      Store.add('measures', d);
+      toast('措施新增成功');
+    }
+    renderMeasures();
+  });
+}
+
+document.querySelector('[data-new-measure]').onclick = () => openMeasureModal();
+
+// ============== Render: Monitor ==============
+function renderMonitor() {
   const tbody = document.getElementById('monitorList');
   let html = '';
   for (let i = 1; i <= 8; i++) {
     const veg = randInt(40, 85);
     const dune = randFloat(0.2, 5.8);
     const erosion = randInt(120, 850);
-    const abnormal = dune > 4 || erosion > 700;
+    const abnormal = parseFloat(dune) > 4 || erosion > 700;
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">M${String(i).padStart(2,'0')}监测站</td>
+      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">M${pad(i,2)}监测站</td>
       <td class="px-5 py-3.5 text-slate-700 font-medium">${veg}%</td>
       <td class="px-5 py-3.5 ${parseFloat(dune)>4?'text-desert-600 font-medium':'text-slate-700'}">${dune}m/月</td>
       <td class="px-5 py-3.5 ${erosion>700?'text-desert-600 font-medium':'text-slate-700'}">${erosion}t/km²</td>
@@ -857,89 +1360,185 @@ function randFloat(min, max, d = 1) { return (Math.random() * (max - min) + min)
     </tr>`;
   }
   tbody.innerHTML = html;
-})();
+}
 
-// ============== Replenish List ==============
-(function renderReplenish() {
+// ============== Render: Replenish ==============
+function renderReplenishes() {
   const tbody = document.getElementById('replenishList');
   let html = '';
-  const rps = ['待补植', '补植中', '已完成'];
-  const rpColors = { '待补植': 'bg-slate-100 text-slate-600', '补植中': 'bg-desert-100 text-desert-700', '已完成': 'bg-primary-100 text-primary-700' };
-  for (let i = 1; i <= 8; i++) {
-    const s = rand(rps);
+  Store.replenishes.forEach(r => {
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">RPL-${String(i).padStart(4,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-800 font-medium">${rand(areas)}-BLK-${String(randInt(1,50)).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-700">${randInt(500, 8000).toLocaleString()}</td>
-      <td class="px-5 py-3.5 text-slate-600 text-xs">2026-${String(randInt(4,6)).padStart(2,'0')}-${String(randInt(1,28)).padStart(2,'0')}</td>
-      <td class="px-5 py-3.5"><span class="badge ${rpColors[s]}">${s}</span></td>
+      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">${r.code}</td>
+      <td class="px-5 py-3.5 text-slate-800 font-medium">${r.originBlock}</td>
+      <td class="px-5 py-3.5 text-slate-700">${r.quantity.toLocaleString()}</td>
+      <td class="px-5 py-3.5 text-slate-600 text-xs">${r.date}</td>
+      <td class="px-5 py-3.5">
+        <span class="badge ${REPLENISH_STATUS_COLORS[r.status]}">${r.status}</span>
+        <button class="text-slate-400 hover:text-slate-600 text-xs ml-2" data-action="edit-replenish" data-id="${r.id}">编辑</button>
+      </td>
     </tr>`;
-  }
+  });
   tbody.innerHTML = html;
-})();
+  tbody.querySelectorAll('[data-action="edit-replenish"]').forEach(btn => {
+    btn.onclick = () => openReplenishModal(parseInt(btn.dataset.id));
+  });
+}
 
-// ============== Keeper List ==============
-(function renderKeepers() {
+function openReplenishModal(id) {
+  const r = id ? Store.get('replenishes', id) : null;
+  const title = id ? '编辑补植记录' : '新增补植记录';
+  const fields = `<form id="modalForm">
+    <div class="space-y-4">
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">原种植区</label>
+        <input type="text" name="originBlock" value="${r?.originBlock||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">补植株数</label>
+          <input type="number" name="quantity" value="${r?.quantity||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">补植日期</label>
+          <input type="date" name="date" value="${r?.date||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">状态</label>
+        <select name="status" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+          ${REPLENISH_STATUS.map(s => `<option ${r?.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  </form>`;
+  Modal.open(title, fields, data => {
+    const d = { ...data, quantity: parseInt(data.quantity)||0 };
+    if (id) {
+      Store.update('replenishes', id, d);
+      toast('补植记录更新成功');
+    } else {
+      d.code = 'RPL-' + pad(Store.replenishes.length + 1, 4);
+      Store.add('replenishes', d);
+      toast('补植记录新增成功');
+    }
+    renderReplenishes();
+  });
+}
+
+document.querySelector('[data-new-replenish]').onclick = () => openReplenishModal();
+
+// ============== Render: Keepers (管护责任) ==============
+function renderKeepers() {
   const tbody = document.getElementById('keeperList');
   let html = '';
-  const evals = ['优秀', '良好', '合格'];
-  const evColors = { '优秀': 'bg-primary-100 text-primary-700', '良好': 'bg-blue-100 text-blue-700', '合格': 'bg-slate-100 text-slate-600' };
-  for (let i = 1; i <= 8; i++) {
-    const ev = rand(evals);
+  Store.keepers.forEach(k => {
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 text-slate-800 font-medium">${rand(keepers)}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(areas)}-BLK-${String(randInt(1,30)).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-700">${randInt(500, 5000).toLocaleString()}</td>
-      <td class="px-5 py-3.5 text-slate-600 font-mono text-xs">1${randInt(3,9)}${String(randInt(10000000,99999999))}</td>
-      <td class="px-5 py-3.5"><span class="badge ${evColors[ev]}">${ev}</span></td>
+      <td class="px-5 py-3.5 text-slate-800 font-medium">${k.name}</td>
+      <td class="px-5 py-3.5 text-slate-600">${k.blockCode}</td>
+      <td class="px-5 py-3.5 text-slate-700">${k.area.toLocaleString()}</td>
+      <td class="px-5 py-3.5 text-slate-600 font-mono text-xs">${k.phone}</td>
+      <td class="px-5 py-3.5">
+        <span class="badge ${EVAL_COLORS[k.eval]}">${k.eval}</span>
+        <button class="text-slate-400 hover:text-slate-600 text-xs ml-2" data-action="edit-keeper" data-id="${k.id}">编辑</button>
+      </td>
     </tr>`;
-  }
+  });
   tbody.innerHTML = html;
-})();
+  tbody.querySelectorAll('[data-action="edit-keeper"]').forEach(btn => {
+    btn.onclick = () => openKeeperModal(parseInt(btn.dataset.id));
+  });
+}
 
-// ============== Maintain List ==============
-(function renderMaintain() {
+function openKeeperModal(id) {
+  const k = id ? Store.get('keepers', id) : null;
+  const title = id ? '编辑管护责任' : '分配管护责任';
+  const fields = `<form id="modalForm">
+    <div class="space-y-4">
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">管护人姓名</label>
+        <input type="text" name="name" value="${k?.name||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">负责区块</label>
+          <input type="text" name="blockCode" value="${k?.blockCode||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">管护面积(亩)</label>
+          <input type="number" name="area" value="${k?.area||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">联系电话</label>
+          <input type="text" name="phone" value="${k?.phone||''}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">考核评级</label>
+          <select name="eval" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${EVALS.map(e => `<option ${k?.eval===e?'selected':''}>${e}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>`;
+  Modal.open(title, fields, data => {
+    const d = { ...data, area: parseInt(data.area)||0 };
+    if (id) {
+      Store.update('keepers', id, d);
+      toast('管护责任更新成功');
+    } else {
+      Store.add('keepers', d);
+      toast('管护责任分配成功');
+    }
+    renderKeepers();
+  });
+}
+
+document.querySelector('[data-new-keeper]').onclick = () => openKeeperModal();
+
+// ============== Render: Maintain ==============
+function renderMaintains() {
   const tbody = document.getElementById('maintainList');
   let html = '';
-  const notes = ['', '发现少量蚜虫，已喷洒生物农药', '沙障局部受损，需补充麦草', '生长状态良好', '需加强浇水频次'];
-  for (let i = 1; i <= 10; i++) {
-    const j = rand(jobs);
+  Store.maintains.slice(0, 10).forEach(m => {
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">MNT-${String(i).padStart(5,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-800 font-medium">${j}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(areas)}-BLK-${String(randInt(1,50)).padStart(3,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-600 text-xs">2026-${String(randInt(4,6)).padStart(2,'0')}-${String(randInt(1,28)).padStart(2,'0')}</td>
-      <td class="px-5 py-3.5 text-slate-600">${rand(keepers)}</td>
-      <td class="px-5 py-3.5 text-slate-700">${j.includes('灌溉')?randInt(50,500)+'亩':j.includes('防治')?randInt(20,200)+'亩':j.includes('修枝')?randInt(100,1000)+'株':randInt(1,8)+'人·天'}</td>
-      <td class="px-5 py-3.5 text-slate-500 text-xs">${notes[i%5] || '-'}</td>
+      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">${m.code}</td>
+      <td class="px-5 py-3.5 text-slate-800 font-medium">${m.job}</td>
+      <td class="px-5 py-3.5 text-slate-600">${m.blockCode}</td>
+      <td class="px-5 py-3.5 text-slate-600 text-xs">${m.date}</td>
+      <td class="px-5 py-3.5 text-slate-600">${m.keeper}</td>
+      <td class="px-5 py-3.5 text-slate-700">${m.workload}</td>
+      <td class="px-5 py-3.5 text-slate-500 text-xs">${m.note || '-'}</td>
     </tr>`;
-  }
+  });
   tbody.innerHTML = html;
-})();
+}
 
 // ============== Block Rank ==============
-(function renderBlockRank() {
+function renderBlockRank() {
   const container = document.getElementById('blockRankList');
-  const blockNames = ['A区-中心示范区', 'B区-北防风带', 'C区-南沙丘群', 'D区-东段沙带', 'E区-东滩沙化区', 'A区-西部戈壁'];
+  const ranked = [...Store.blocks].sort((a, b) => b.coverRate - a.coverRate).slice(0, 6);
   let html = '';
-  blockNames.forEach((name, idx) => {
-    const score = 95 - idx * 5 + randInt(-2, 2);
+  ranked.forEach((b, idx) => {
     const medal = idx === 0 ? 'text-yellow-500' : idx === 1 ? 'text-slate-400' : idx === 2 ? 'text-desert-500' : 'text-slate-300';
     html += `<div class="flex items-center">
       <span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold ${medal} mr-3">${idx+1}</span>
       <div class="flex-1">
         <div class="flex items-center justify-between mb-1">
-          <span class="text-sm text-slate-700">${name}</span>
-          <span class="text-sm font-semibold text-slate-800">${score}分</span>
+          <span class="text-sm text-slate-700">${b.name}</span>
+          <span class="text-sm font-semibold text-slate-800">${b.coverRate}分</span>
         </div>
         <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-          <div class="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full" style="width:${score}%"></div>
+          <div class="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full" style="width:${b.coverRate}%"></div>
         </div>
       </div>
     </div>`;
   });
   container.innerHTML = html;
-})();
+}
+
+// ============== Init all renders ==============
+renderBlocks();
+renderProjects();
+renderPlantings();
+renderMeasures();
+renderMonitor();
+renderReplenishes();
+renderKeepers();
+renderMaintains();
+renderBlockRank();
 
 // ============== Charts ==============
 const chartsInit = {};
