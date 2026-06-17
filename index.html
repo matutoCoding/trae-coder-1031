@@ -422,20 +422,20 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       <section id="monitor" class="page fade-in">
         <div class="grid grid-cols-4 gap-5 mb-6">
           <div class="card-hover bg-white rounded-xl p-5 border border-slate-100">
-            <div class="text-sm text-slate-500">监测站点</div>
-            <div class="mt-2 text-3xl font-bold text-slate-800">48</div>
+            <div class="text-sm text-slate-500">监测记录</div>
+            <div class="mt-2 text-3xl font-bold text-slate-800" id="monStatCount">0</div>
           </div>
           <div class="card-hover bg-white rounded-xl p-5 border border-slate-100">
-            <div class="text-sm text-slate-500">监测设备</div>
-            <div class="mt-2 text-3xl font-bold text-slate-800">326</div>
+            <div class="text-sm text-slate-500">平均覆盖率</div>
+            <div class="mt-2 text-3xl font-bold text-slate-800"><span id="monStatCoverAvg">0</span>%</div>
           </div>
           <div class="card-hover bg-white rounded-xl p-5 border border-slate-100">
-            <div class="text-sm text-slate-500">在线率</div>
-            <div class="mt-2 text-3xl font-bold text-primary-600">94.8%</div>
+            <div class="text-sm text-slate-500">正常状态</div>
+            <div class="mt-2 text-3xl font-bold text-primary-600" id="monStatNormal">0</div>
           </div>
           <div class="card-hover bg-white rounded-xl p-5 border border-slate-100">
-            <div class="text-sm text-slate-500">本月预警</div>
-            <div class="mt-2 text-3xl font-bold text-desert-600">12</div>
+            <div class="text-sm text-slate-500">预警/异常</div>
+            <div class="mt-2 text-3xl font-bold text-desert-600" id="monStatWarning">0</div>
           </div>
         </div>
 
@@ -458,16 +458,22 @@ body { font-family: 'Inter', system-ui, sans-serif; }
           <div class="bg-white rounded-xl border border-slate-100">
             <div class="flex items-center justify-between p-5 border-b border-slate-100">
               <h3 class="font-semibold text-slate-800">实时监测数据</h3>
-              <span class="badge bg-primary-50 text-primary-700"><i class="ri-radio-button-line mr-1 text-xs"></i>实时更新中</span>
+              <div class="flex items-center gap-2">
+                <button class="px-3 py-1.5 rounded-lg bg-primary-600 text-white text-xs hover:bg-primary-700" data-new-monitor><i class="ri-add-line mr-1"></i>新增监测</button>
+                <span class="badge bg-primary-50 text-primary-700"><i class="ri-radio-button-line mr-1 text-xs"></i>实时更新中</span>
+              </div>
             </div>
             <table class="w-full text-sm">
               <thead class="bg-slate-50 text-slate-500 text-xs">
                 <tr>
-                  <th class="text-left px-5 py-3 font-medium">监测点</th>
+                  <th class="text-left px-5 py-3 font-medium">监测编号</th>
+                  <th class="text-left px-5 py-3 font-medium">类型</th>
+                  <th class="text-left px-5 py-3 font-medium">所属区块</th>
                   <th class="text-left px-5 py-3 font-medium">植被覆盖</th>
                   <th class="text-left px-5 py-3 font-medium">沙丘位移</th>
                   <th class="text-left px-5 py-3 font-medium">风蚀量</th>
                   <th class="text-left px-5 py-3 font-medium">状态</th>
+                  <th class="text-left px-5 py-3 font-medium">操作</th>
                 </tr>
               </thead>
               <tbody id="monitorList" class="divide-y divide-slate-100"></tbody>
@@ -610,23 +616,23 @@ body { font-family: 'Inter', system-ui, sans-serif; }
         <div class="grid grid-cols-4 gap-5 mb-6">
           <div class="card-hover bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl p-5 text-white">
             <div class="text-sm opacity-90">累计治理面积(亩)</div>
-            <div class="mt-2 text-3xl font-bold">86,420</div>
-            <div class="mt-3 text-xs opacity-80"><i class="ri-arrow-up-line"></i> 较2020年增长 312%</div>
+            <div class="mt-2 text-3xl font-bold" id="statTotalArea">0</div>
+            <div class="mt-3 text-xs opacity-80"><i class="ri-arrow-up-line"></i> 累计治理区块 <span id="statBlockCount">0</span> 个</div>
           </div>
           <div class="card-hover bg-gradient-to-br from-sand-500 to-desert-600 rounded-xl p-5 text-white">
             <div class="text-sm opacity-90">平均成活率</div>
-            <div class="mt-2 text-3xl font-bold">87.3%</div>
-            <div class="mt-3 text-xs opacity-80"><i class="ri-arrow-up-line"></i> 较上年提升 4.2%</div>
+            <div class="mt-2 text-3xl font-bold"><span id="statSurvivalAvg">0</span>%</div>
+            <div class="mt-3 text-xs opacity-80"><i class="ri-arrow-up-line"></i> 基于 <span id="statPlantingCount">0</span> 条种植记录</div>
           </div>
           <div class="card-hover bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl p-5 text-white">
-            <div class="text-sm opacity-90">植被覆盖率</div>
-            <div class="mt-2 text-3xl font-bold">62.4%</div>
-            <div class="mt-3 text-xs opacity-80"><i class="ri-arrow-up-line"></i> 较治理前提升 45.8%</div>
+            <div class="text-sm opacity-90">措施完好率</div>
+            <div class="mt-2 text-3xl font-bold"><span id="statIntactAvg">0</span>%</div>
+            <div class="mt-3 text-xs opacity-80"><i class="ri-arrow-up-line"></i> 基于 <span id="statMeasureCount">0</span> 条措施记录</div>
           </div>
           <div class="card-hover bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl p-5 text-white">
-            <div class="text-sm opacity-90">固碳量(吨/年)</div>
-            <div class="mt-2 text-3xl font-bold">18,650</div>
-            <div class="mt-3 text-xs opacity-80">年生态价值约 ¥1,280万</div>
+            <div class="text-sm opacity-90">监测预警</div>
+            <div class="mt-2 text-3xl font-bold" id="statWarningCount">0</div>
+            <div class="mt-3 text-xs opacity-80">共 <span id="statMonitorCount">0</span> 条监测记录</div>
           </div>
         </div>
 
@@ -764,12 +770,15 @@ const EVALS = ['优秀', '良好', '合格'];
 const EVAL_COLORS = { '优秀': 'bg-primary-100 text-primary-700', '良好': 'bg-blue-100 text-blue-700', '合格': 'bg-slate-100 text-slate-600' };
 
 // ============== Data Store ==============
-const STORE_KEY = 'desert_control_data';
+const STORE_KEY = 'desert_control_data_v2';
+const MONITOR_STATUS = ['正常', '预警', '异常'];
+const MONITOR_STATUS_COLORS = { '正常': 'bg-primary-100 text-primary-700', '预警': 'bg-sand-100 text-sand-700', '异常': 'bg-desert-100 text-desert-700' };
 const Store = {
   blocks: [],
   projects: [],
   plantings: [],
   measures: [],
+  monitors: [],
   replenishes: [],
   keepers: [],
   maintains: [],
@@ -791,12 +800,13 @@ const Store = {
     }
     const projects = [];
     for (let i = 1; i <= 15; i++) {
+      const blockIdx = randInt(1, 28);
       projects.push({
         id: i,
         code: 'PRJ-2026-' + pad(i, 3),
         name: rand(AREAS) + rand(BLOCK_NAMES) + '综合治理' + ['工程', '项目', '一期', '二期'][i % 4],
         type: rand(PROJECT_TYPES),
-        blockCode: 'BLK-' + pad(randInt(1, 28), 3),
+        blockCode: 'BLK-' + pad(blockIdx, 3),
         invest: randInt(120, 3500),
         startDate: '202' + randInt(4, 6) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
         endDate: '202' + randInt(5, 7) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
@@ -805,42 +815,69 @@ const Store = {
       });
     }
     const plantings = [];
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 20; i++) {
+      const blockIdx = randInt(1, 28);
       plantings.push({
         id: i,
         code: 'PLT-' + pad(i, 4),
         plant: rand(PLANTS),
         plantType: rand(PLANT_TYPES),
-        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        blockCode: 'BLK-' + pad(blockIdx, 3),
         quantity: randInt(1000, 50000),
         area: randInt(50, 800),
         date: '2026-' + pad(randInt(3, 6), 2) + '-' + pad(randInt(1, 28), 2),
-        survivalRate: randInt(70, 99),
+        survivalRate: randInt(55, 99),
         keeper: rand(KEEPERS)
       });
     }
     const measures = [];
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 18; i++) {
       const t = rand(MEASURE_TYPES.filter(x => x !== '生物沙障'));
+      const blockIdx = randInt(1, 28);
       const scale = t.includes('沙障') ? randInt(500, 3000) + '亩' : t.includes('滴灌') ? randInt(10, 100) + '套' : randInt(5, 50) + 'km';
       measures.push({
         id: i,
         code: 'MSR-' + pad(i, 4),
         type: t,
         spec: rand(MEASURE_SPECS),
-        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        blockCode: 'BLK-' + pad(blockIdx, 3),
         scale,
         date: '202' + randInt(5, 6) + '-' + pad(randInt(1, 12), 2) + '-' + pad(randInt(1, 28), 2),
-        intactRate: randInt(70, 99),
+        intactRate: randInt(60, 99),
+        keeper: rand(KEEPERS)
+      });
+    }
+    const monitors = [];
+    const monitorTypes = ['植被覆盖监测', '沙丘移动监测', '风蚀量监测'];
+    for (let i = 1; i <= 25; i++) {
+      const blockIdx = randInt(1, 28);
+      const mtype = rand(monitorTypes);
+      const coverRate = randInt(20, 90);
+      const duneMove = randInt(0, 80);
+      const erosion = randInt(0, 500);
+      let status = '正常';
+      if (coverRate < 40 || duneMove > 50 || erosion > 300) status = '预警';
+      if (coverRate < 30 || duneMove > 70 || erosion > 450) status = '异常';
+      monitors.push({
+        id: i,
+        code: 'MON-' + pad(i, 5),
+        type: mtype,
+        blockCode: 'BLK-' + pad(blockIdx, 3),
+        date: '2026-' + pad(randInt(1, 6), 2) + '-' + pad(randInt(1, 28), 2),
+        coverRate,
+        duneMove,
+        erosion,
+        status,
         keeper: rand(KEEPERS)
       });
     }
     const replenishes = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 12; i++) {
+      const blockIdx = randInt(1, 28);
       replenishes.push({
         id: i,
         code: 'RPL-' + pad(i, 4),
-        originBlock: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        originBlock: 'BLK-' + pad(blockIdx, 3),
         quantity: randInt(500, 8000),
         date: '2026-' + pad(randInt(4, 6), 2) + '-' + pad(randInt(1, 28), 2),
         status: rand(REPLENISH_STATUS)
@@ -848,10 +885,11 @@ const Store = {
     }
     const keepers = [];
     for (let i = 1; i <= 10; i++) {
+      const blockIdx = randInt(1, 28);
       keepers.push({
         id: i,
         name: KEEPERS[(i - 1) % KEEPERS.length],
-        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 30), 3),
+        blockCode: 'BLK-' + pad(blockIdx, 3),
         area: randInt(500, 5000),
         phone: '1' + randInt(3, 9) + randInt(10000000, 99999999),
         eval: rand(EVALS)
@@ -859,20 +897,21 @@ const Store = {
     }
     const maintains = [];
     const notes = ['', '发现少量蚜虫，已喷洒生物农药', '沙障局部受损，需补充麦草', '生长状态良好', '需加强浇水频次'];
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 18; i++) {
       const j = rand(JOBS);
+      const blockIdx = randInt(1, 28);
       maintains.push({
         id: i,
         code: 'MNT-' + pad(i, 5),
         job: j,
-        blockCode: rand(AREAS) + '-BLK-' + pad(randInt(1, 50), 3),
+        blockCode: 'BLK-' + pad(blockIdx, 3),
         date: '2026-' + pad(randInt(4, 6), 2) + '-' + pad(randInt(1, 28), 2),
         keeper: rand(KEEPERS),
         workload: j.includes('灌溉') ? randInt(50, 500) + '亩' : j.includes('防治') ? randInt(20, 200) + '亩' : j.includes('修枝') ? randInt(100, 1000) + '株' : randInt(1, 8) + '人·天',
         note: notes[i % 5] || '-'
       });
     }
-    return { blocks, projects, plantings, measures, replenishes, keepers, maintains };
+    return { blocks, projects, plantings, measures, monitors, replenishes, keepers, maintains };
   },
 
   init() {
@@ -884,6 +923,7 @@ const Store = {
         this.projects = data.projects || [];
         this.plantings = data.plantings || [];
         this.measures = data.measures || [];
+        this.monitors = data.monitors || [];
         this.replenishes = data.replenishes || [];
         this.keepers = data.keepers || [];
         this.maintains = data.maintains || [];
@@ -895,6 +935,7 @@ const Store = {
     this.projects = defaults.projects;
     this.plantings = defaults.plantings;
     this.measures = defaults.measures;
+    this.monitors = defaults.monitors;
     this.replenishes = defaults.replenishes;
     this.keepers = defaults.keepers;
     this.maintains = defaults.maintains;
@@ -907,6 +948,7 @@ const Store = {
       projects: this.projects,
       plantings: this.plantings,
       measures: this.measures,
+      monitors: this.monitors,
       replenishes: this.replenishes,
       keepers: this.keepers,
       maintains: this.maintains
@@ -929,14 +971,22 @@ const Store = {
     return this[type].find(x => x.id === id);
   },
   findRelated(blockCode) {
-    const code = blockCode;
     return {
-      projects: this.projects.filter(p => p.blockCode === code),
-      plantings: this.plantings.filter(p => p.blockCode === code),
-      measures: this.measures.filter(m => m.blockCode === code),
-      replenishes: this.replenishes.filter(r => r.originBlock === code),
-      maintains: this.maintains.filter(m => m.blockCode === code)
+      projects: this.projects.filter(p => p.blockCode === blockCode),
+      plantings: this.plantings.filter(p => p.blockCode === blockCode),
+      measures: this.measures.filter(m => m.blockCode === blockCode),
+      monitors: this.monitors.filter(m => m.blockCode === blockCode),
+      replenishes: this.replenishes.filter(r => r.originBlock === blockCode),
+      maintains: this.maintains.filter(m => m.blockCode === blockCode)
     };
+  },
+  getStats() {
+    const avg = arr => arr.length ? Math.round(arr.reduce((s, x) => s + x, 0) / arr.length) : 0;
+    const survivalAvg = avg(this.plantings.map(p => p.survivalRate));
+    const intactAvg = avg(this.measures.map(m => m.intactRate));
+    const warningCount = this.monitors.filter(m => m.status === '预警' || m.status === '异常').length;
+    const blockRank = [...this.blocks].sort((a, b) => b.coverRate - a.coverRate).slice(0, 10);
+    return { survivalAvg, intactAvg, warningCount, blockRank };
   }
 };
 Store.init();
@@ -1044,15 +1094,20 @@ function buildTimeline(blockCode) {
   related.projects.forEach(p => events.push({ date: p.startDate, icon: 'ri-folder-chart-line', color: 'bg-blue-500', title: `工程: ${p.name}`, desc: `${p.type} · 投资${p.invest}万 · ${p.status}` }));
   related.plantings.forEach(p => events.push({ date: p.date, icon: 'ri-seedling-line', color: 'bg-primary-500', title: `种植: ${p.plant}`, desc: `${p.quantity}株 · ${p.area}亩 · 成活率${p.survivalRate}%` }));
   related.measures.forEach(m => events.push({ date: m.date, icon: 'ri-shield-check-line', color: 'bg-sand-500', title: `固沙: ${m.type}`, desc: `${m.spec} · ${m.scale} · 完好率${m.intactRate}%` }));
+  related.monitors.forEach(m => {
+    const tag = m.status === '正常' ? '' : `<span class="badge ${MONITOR_STATUS_COLORS[m.status]} ml-1">${m.status}</span>`;
+    events.push({ date: m.date, icon: 'ri-eye-line', color: 'bg-cyan-500', title: `监测: ${m.type}${tag}`, desc: `覆盖${m.coverRate}% · 沙丘移动${m.duneMove}m · 风蚀${m.erosion}t/km²` });
+  });
   related.replenishes.forEach(r => events.push({ date: r.date, icon: 'ri-restart-line', color: 'bg-purple-500', title: `补植: ${r.originBlock}`, desc: `${r.quantity}株 · ${r.status}` }));
   related.maintains.forEach(m => events.push({ date: m.date, icon: 'ri-tools-line', color: 'bg-slate-500', title: `养护: ${m.job}`, desc: `${m.blockCode} · ${m.workload}` }));
   events.sort((a, b) => b.date.localeCompare(a.date));
   if (!events.length) return '<div class="text-slate-400 text-sm py-4 text-center">暂无相关记录</div>';
-  return events.slice(0, 12).map((ev, i) => `
+  const displayEvents = events.slice(0, 15);
+  return displayEvents.map((ev, i) => `
     <div class="flex items-start">
       <div class="flex flex-col items-center mr-3">
         <div class="w-8 h-8 rounded-full ${ev.color} flex items-center justify-center text-white"><i class="${ev.icon} text-sm"></i></div>
-        ${i < events.slice(0,12).length - 1 ? '<div class="w-0.5 h-8 bg-slate-200"></div>' : ''}
+        ${i < displayEvents.length - 1 ? '<div class="w-0.5 h-8 bg-slate-200"></div>' : ''}
       </div>
       <div class="pb-4">
         <div class="text-sm font-medium text-slate-700">${ev.title}</div>
@@ -1084,14 +1139,19 @@ function openBlockDetail(id) {
       </div>
       <div class="border-t border-slate-100 pt-4">
         <h4 class="text-sm font-semibold text-slate-700 mb-3">关联数据摘要</h4>
-        <div class="grid grid-cols-5 gap-2 text-center">
+        <div class="grid grid-cols-6 gap-2 text-center">
           <div class="bg-blue-50 rounded-lg p-2"><div class="text-lg font-bold text-blue-700">${related.projects.length}</div><div class="text-xs text-blue-600">工程</div></div>
           <div class="bg-primary-50 rounded-lg p-2"><div class="text-lg font-bold text-primary-700">${related.plantings.length}</div><div class="text-xs text-primary-600">种植</div></div>
           <div class="bg-sand-50 rounded-lg p-2"><div class="text-lg font-bold text-sand-700">${related.measures.length}</div><div class="text-xs text-sand-600">措施</div></div>
+          <div class="bg-cyan-50 rounded-lg p-2"><div class="text-lg font-bold text-cyan-700">${related.monitors.length}</div><div class="text-xs text-cyan-600">监测</div></div>
           <div class="bg-purple-50 rounded-lg p-2"><div class="text-lg font-bold text-purple-700">${related.replenishes.length}</div><div class="text-xs text-purple-600">补植</div></div>
           <div class="bg-slate-50 rounded-lg p-2"><div class="text-lg font-bold text-slate-700">${related.maintains.length}</div><div class="text-xs text-slate-600">养护</div></div>
         </div>
       </div>
+      ${related.monitors.length ? `<div class="border-t border-slate-100 pt-3">
+        <h4 class="text-sm font-semibold text-slate-700 mb-2">最近监测</h4>
+        <div class="space-y-1">${related.monitors.slice(0,3).map(m => `<div class="flex justify-between text-xs"><span class="text-slate-600">${m.type} · 覆盖${m.coverRate}%</span><span class="badge ${MONITOR_STATUS_COLORS[m.status]}">${m.status}</span></div>`).join('')}</div>
+      </div>` : ''}
       ${related.plantings.length ? `<div class="border-t border-slate-100 pt-3">
         <h4 class="text-sm font-semibold text-slate-700 mb-2">最近种植</h4>
         <div class="space-y-1">${related.plantings.slice(0,3).map(p => `<div class="flex justify-between text-xs"><span class="text-slate-600">${p.plant} · ${p.quantity}株</span><span class="badge ${getRateColor(p.survivalRate)}">${p.survivalRate}%成活</span></div>`).join('')}</div>
@@ -1115,7 +1175,7 @@ function openProjectDetail(id) {
   const p = Store.get('projects', id);
   if (!p) return;
   const block = Store.blocks.find(b => b.code === p.blockCode);
-  const related = block ? Store.findRelated(block.code) : { plantings: [], measures: [], replenishes: [], maintains: [] };
+  const related = block ? Store.findRelated(block.code) : { plantings: [], measures: [], monitors: [], replenishes: [], maintains: [] };
   const html = `
     <div class="space-y-5">
       <div class="grid grid-cols-2 gap-3 text-sm">
@@ -1130,9 +1190,10 @@ function openProjectDetail(id) {
       </div>
       ${block ? `<div class="border-t border-slate-100 pt-4">
         <h4 class="text-sm font-semibold text-slate-700 mb-3">所属区块关联摘要</h4>
-        <div class="grid grid-cols-4 gap-2 text-center">
+        <div class="grid grid-cols-5 gap-2 text-center">
           <div class="bg-primary-50 rounded-lg p-2"><div class="text-lg font-bold text-primary-700">${related.plantings.length}</div><div class="text-xs text-primary-600">种植</div></div>
           <div class="bg-sand-50 rounded-lg p-2"><div class="text-lg font-bold text-sand-700">${related.measures.length}</div><div class="text-xs text-sand-600">措施</div></div>
+          <div class="bg-cyan-50 rounded-lg p-2"><div class="text-lg font-bold text-cyan-700">${related.monitors.length}</div><div class="text-xs text-cyan-600">监测</div></div>
           <div class="bg-purple-50 rounded-lg p-2"><div class="text-lg font-bold text-purple-700">${related.replenishes.length}</div><div class="text-xs text-purple-600">补植</div></div>
           <div class="bg-slate-50 rounded-lg p-2"><div class="text-lg font-bold text-slate-700">${related.maintains.length}</div><div class="text-xs text-slate-600">养护</div></div>
         </div>
@@ -1265,7 +1326,8 @@ function openBlockModal(id) {
       toast('区块新增成功');
     }
     renderBlocks();
-  }, { rules: { name: { required: true, label: '区块名称' }, size: { min: 1, label: '面积' }, coverRate: { min: 0, max: 100, label: '植被覆盖率' } } });
+    renderAllStats();
+  }, { rules: { name: { required: true, label: '区块名称' }, size: { required: true, min: 1, label: '面积' }, coverRate: { required: true, min: 0, max: 100, label: '植被覆盖率' } } });
 }
 
 // Block events
@@ -1364,7 +1426,8 @@ function openProjectModal(id) {
       toast('工程新增成功');
     }
     renderProjects();
-  }, { rules: { name: { required: true, label: '工程名称' }, invest: { min: 0, label: '投资金额' } } });
+    renderAllStats();
+  }, { rules: { name: { required: true, label: '工程名称' }, invest: { required: true, min: 1, label: '投资金额' }, blockCode: { required: true, label: '所属区块' }, startDate: { required: true, label: '开始日期' }, endDate: { required: true, label: '结束日期' } } });
 }
 
 document.querySelector('#project button[data-new-project]').onclick = () => openProjectModal();
@@ -1455,7 +1518,8 @@ function openPlantingModal(id) {
       toast('种植记录新增成功');
     }
     renderPlantings();
-  }, { rules: { quantity: { min: 1, label: '种植数量' }, area: { min: 1, label: '种植面积' }, survivalRate: { min: 0, max: 100, label: '成活率' } } });
+    renderAllStats();
+  }, { rules: { plant: { required: true, label: '植物名称' }, blockCode: { required: true, label: '所属区块' }, quantity: { required: true, min: 1, label: '种植数量' }, area: { required: true, min: 1, label: '种植面积' }, survivalRate: { required: true, min: 0, max: 100, label: '成活率' }, date: { required: true, label: '种植日期' } } });
 }
 
 document.querySelector('[data-new-planting]').onclick = () => openPlantingModal();
@@ -1539,7 +1603,8 @@ function openMeasureModal(id) {
       toast('措施新增成功');
     }
     renderMeasures();
-  }, { rules: { intactRate: { min: 0, max: 100, label: '完好率' }, scale: { required: true, label: '实施规模' } } });
+    renderAllStats();
+  }, { rules: { type: { required: true, label: '措施类型' }, blockCode: { required: true, label: '所属区块' }, scale: { required: true, label: '实施规模' }, date: { required: true, label: '实施日期' }, intactRate: { required: true, min: 0, max: 100, label: '完好率' } } });
 }
 
 document.querySelector('[data-new-measure]').onclick = () => openMeasureModal();
@@ -1548,23 +1613,108 @@ document.querySelector('[data-new-measure]').onclick = () => openMeasureModal();
 function renderMonitor() {
   const tbody = document.getElementById('monitorList');
   let html = '';
-  for (let i = 1; i <= 8; i++) {
-    const veg = randInt(40, 85);
-    const dune = randFloat(0.2, 5.8);
-    const erosion = randInt(120, 850);
-    const abnormal = parseFloat(dune) > 4 || erosion > 700;
+  Store.monitors.slice(0, 10).forEach(m => {
     html += `<tr class="hover:bg-slate-50">
-      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">M${pad(i,2)}监测站</td>
-      <td class="px-5 py-3.5 text-slate-700 font-medium">${veg}%</td>
-      <td class="px-5 py-3.5 ${parseFloat(dune)>4?'text-desert-600 font-medium':'text-slate-700'}">${dune}m/月</td>
-      <td class="px-5 py-3.5 ${erosion>700?'text-desert-600 font-medium':'text-slate-700'}">${erosion}t/km²</td>
+      <td class="px-5 py-3.5 font-mono text-xs text-slate-700">${m.code}</td>
+      <td class="px-5 py-3.5 text-slate-700">${m.type}</td>
+      <td class="px-5 py-3.5 text-slate-600 text-xs">${m.blockCode}</td>
+      <td class="px-5 py-3.5 ${m.coverRate<40?'text-desert-600 font-medium':'text-slate-700'}">${m.coverRate}%</td>
+      <td class="px-5 py-3.5 ${m.duneMove>50?'text-desert-600 font-medium':'text-slate-700'}">${m.duneMove}m/月</td>
+      <td class="px-5 py-3.5 ${m.erosion>300?'text-desert-600 font-medium':'text-slate-700'}">${m.erosion}t/km²</td>
       <td class="px-5 py-3.5">
-        <span class="badge ${abnormal?'bg-desert-100 text-desert-700':'bg-primary-100 text-primary-700'}">${abnormal?'预警':'正常'}</span>
+        <span class="badge ${MONITOR_STATUS_COLORS[m.status]}">${m.status}</span>
+      </td>
+      <td class="px-5 py-3.5">
+        <button class="text-slate-500 hover:text-slate-700 text-xs" data-action="edit-monitor" data-id="${m.id}">编辑</button>
       </td>
     </tr>`;
-  }
+  });
+  if (!Store.monitors.length) html = `<tr><td colspan="8" class="px-5 py-8 text-center text-slate-400 text-sm">暂无监测数据</td></tr>`;
   tbody.innerHTML = html;
+  tbody.querySelectorAll('[data-action="edit-monitor"]').forEach(btn => {
+    btn.onclick = () => openMonitorModal(parseInt(btn.dataset.id));
+  });
 }
+
+function openMonitorModal(id) {
+  const m = id ? Store.get('monitors', id) : null;
+  const title = id ? '编辑监测记录' : '新增监测记录';
+  const blockOptions = Store.blocks.map(b => `<option ${m?.blockCode===b.code?'selected':''} value="${b.code}">${b.code} - ${b.name}</option>`).join('');
+  const fields = `<form id="modalForm">
+    <div id="modalErrors" class="mb-3"></div>
+    <div class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">监测类型</label>
+          <select name="type" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${['植被覆盖监测','沙丘移动监测','风蚀量监测'].map(t => `<option ${m?.type===t?'selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">所属区块 <span class="text-red-400">*</span></label>
+          <select name="blockCode" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">${blockOptions}</select>
+        </div>
+      </div>
+      <div><label class="block text-sm font-medium text-slate-700 mb-1.5">监测日期 <span class="text-red-400">*</span></label>
+        <input type="date" name="date" value="${m?.date||'2026-06-17'}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">植被覆盖率(%) <span class="text-red-400">*</span></label>
+          <input type="number" name="coverRate" min="0" max="100" value="${m?.coverRate||0}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">沙丘位移(m) <span class="text-red-400">*</span></label>
+          <input type="number" name="duneMove" min="0" value="${m?.duneMove||0}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">风蚀量(t/km²) <span class="text-red-400">*</span></label>
+          <input type="number" name="erosion" min="0" value="${m?.erosion||0}" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">状态</label>
+          <select name="status" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${MONITOR_STATUS.map(s => `<option ${m?.status===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div><label class="block text-sm font-medium text-slate-700 mb-1.5">负责人</label>
+          <select name="keeper" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-sm">
+            ${KEEPERS.map(k => `<option ${m?.keeper===k?'selected':''}>${k}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>`;
+  Modal.open(title, fields, data => {
+    const d = { 
+      ...data, 
+      coverRate: parseInt(data.coverRate)||0, 
+      duneMove: parseInt(data.duneMove)||0, 
+      erosion: parseInt(data.erosion)||0 
+    };
+    if (d.status === undefined) {
+      if (d.coverRate < 40 || d.duneMove > 50 || d.erosion > 300) d.status = '预警';
+      else if (d.coverRate < 30 || d.duneMove > 70 || d.erosion > 450) d.status = '异常';
+      else d.status = '正常';
+    }
+    if (id) {
+      Store.update('monitors', id, d);
+      toast('监测记录更新成功');
+    } else {
+      d.code = 'MON-' + pad(Store.monitors.length + 1, 5);
+      Store.add('monitors', d);
+      toast('监测记录新增成功');
+    }
+    renderMonitor();
+    renderAllStats();
+  }, { 
+    rules: { 
+      blockCode: { required: true, label: '所属区块' },
+      date: { required: true, label: '监测日期' },
+      coverRate: { required: true, min: 0, max: 100, label: '植被覆盖率' },
+      duneMove: { required: true, min: 0, label: '沙丘位移' },
+      erosion: { required: true, min: 0, label: '风蚀量' }
+    } 
+  });
+}
+
+document.querySelector('[data-new-monitor]').onclick = () => openMonitorModal();
 
 // ============== Render: Replenish ==============
 function renderReplenishes() {
@@ -1623,7 +1773,8 @@ function openReplenishModal(id) {
       toast('补植记录新增成功');
     }
     renderReplenishes();
-  }, { rules: { originBlock: { required: true, label: '原种植区' }, quantity: { min: 1, label: '补植株数' } } });
+    renderAllStats();
+  }, { rules: { originBlock: { required: true, label: '原种植区' }, quantity: { required: true, min: 1, label: '补植株数' }, date: { required: true, label: '补植日期' } } });
 }
 
 document.querySelector('[data-new-replenish]').onclick = () => openReplenishModal();
@@ -1689,7 +1840,8 @@ function openKeeperModal(id) {
       toast('管护责任分配成功');
     }
     renderKeepers();
-  }, { rules: { name: { required: true, label: '管护人姓名' }, area: { min: 1, label: '管护面积' } } });
+    renderAllStats();
+  }, { rules: { name: { required: true, label: '管护人姓名' }, blockCode: { required: true, label: '负责区块' }, area: { required: true, min: 1, label: '管护面积' }, phone: { required: true, label: '联系电话' } } });
 }
 
 document.querySelector('[data-new-keeper]').onclick = () => openKeeperModal();
@@ -1712,19 +1864,46 @@ function renderMaintains() {
   tbody.innerHTML = html;
 }
 
+// ============== Stats Summary ==============
+function renderStatsSummary() {
+  const stats = Store.getStats();
+  const totalArea = Store.blocks.reduce((s, b) => s + b.size, 0);
+  const el = id => document.getElementById(id);
+  if (el('statTotalArea')) el('statTotalArea').textContent = totalArea.toLocaleString();
+  if (el('statBlockCount')) el('statBlockCount').textContent = Store.blocks.length;
+  if (el('statSurvivalAvg')) el('statSurvivalAvg').textContent = stats.survivalAvg;
+  if (el('statPlantingCount')) el('statPlantingCount').textContent = Store.plantings.length;
+  if (el('statIntactAvg')) el('statIntactAvg').textContent = stats.intactAvg;
+  if (el('statMeasureCount')) el('statMeasureCount').textContent = Store.measures.length;
+  if (el('statWarningCount')) el('statWarningCount').textContent = stats.warningCount;
+  if (el('statMonitorCount')) el('statMonitorCount').textContent = Store.monitors.length;
+}
+
+function renderMonitorStats() {
+  const avg = arr => arr.length ? Math.round(arr.reduce((s, x) => s + x, 0) / arr.length) : 0;
+  const coverAvg = avg(Store.monitors.map(m => m.coverRate));
+  const normalCount = Store.monitors.filter(m => m.status === '正常').length;
+  const warningCount = Store.monitors.filter(m => m.status !== '正常').length;
+  const el = id => document.getElementById(id);
+  if (el('monStatCount')) el('monStatCount').textContent = Store.monitors.length;
+  if (el('monStatCoverAvg')) el('monStatCoverAvg').textContent = coverAvg;
+  if (el('monStatNormal')) el('monStatNormal').textContent = normalCount;
+  if (el('monStatWarning')) el('monStatWarning').textContent = warningCount;
+}
+
 // ============== Block Rank ==============
 function renderBlockRank() {
   const container = document.getElementById('blockRankList');
-  const ranked = [...Store.blocks].sort((a, b) => b.coverRate - a.coverRate).slice(0, 6);
+  const stats = Store.getStats();
   let html = '';
-  ranked.forEach((b, idx) => {
+  stats.blockRank.forEach((b, idx) => {
     const medal = idx === 0 ? 'text-yellow-500' : idx === 1 ? 'text-slate-400' : idx === 2 ? 'text-desert-500' : 'text-slate-300';
     html += `<div class="flex items-center">
       <span class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold ${medal} mr-3">${idx+1}</span>
       <div class="flex-1">
         <div class="flex items-center justify-between mb-1">
           <span class="text-sm text-slate-700">${b.name}</span>
-          <span class="text-sm font-semibold text-slate-800">${b.coverRate}分</span>
+          <span class="text-sm font-semibold text-slate-800">${b.coverRate}%</span>
         </div>
         <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
           <div class="h-full bg-gradient-to-r from-primary-400 to-primary-600 rounded-full" style="width:${b.coverRate}%"></div>
@@ -1733,6 +1912,12 @@ function renderBlockRank() {
     </div>`;
   });
   container.innerHTML = html;
+}
+
+function renderAllStats() {
+  renderStatsSummary();
+  renderMonitorStats();
+  renderBlockRank();
 }
 
 // ============== Init all renders ==============
@@ -1744,7 +1929,7 @@ renderMonitor();
 renderReplenishes();
 renderKeepers();
 renderMaintains();
-renderBlockRank();
+renderAllStats();
 
 // ============== Charts ==============
 const chartsInit = {};
